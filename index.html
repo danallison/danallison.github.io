@@ -6,9 +6,42 @@
     <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32" />
     <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16" />
     <title>Dan Allison</title>
+    <style>
+    body {
+      background-color: #eee;
+      font-family: Courier;
+    }
+    img.center-image {
+      display: block;
+      width: 200px;
+      margin: 0 auto;
+    }
+    .content {
+      background-color: #fff;
+      width: 360px;
+      min-width: 100px;
+      display: block;
+      margin: 10px auto;
+      padding: 10px;
+      border: 2px solid #000;
+      border-radius: 10px;
+    }
+    </style>
   </head>
   <body>
-    <div>Hello World.</div>
-    <img src="images/thinking-infinity.png" width="200px">
+    <div id="main-container">
+      <div>
+        <img class="center-image" src="images/thinking-infinity.png">
+      </div>
+      <div class="content">
+        <div>Hello World. My name is Dan. I write code and draw and think about math and stare out of windows.</div>
+        <br/>
+        <div>Check out these links:</div>
+        <ul>
+          <li><a href="https://calculist.io">Calculist</a><br/> My main project at the moment.</li>
+          <li><a href="https://www.patreon.com/calculist">Patreon</a><br/> Support my work through Patreon.</li>
+        </ul>
+      </div>
+    </div>
   </body>
 </html>
