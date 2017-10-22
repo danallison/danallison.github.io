@@ -1,0 +1,55 @@
+==================================================================
+https://keybase.io/danallison
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://danallison.github.io
+  * I am danallison (https://keybase.io/danallison) on keybase.
+  * I have a public key ASDUznCpicoQz-TtNd0WOBIMNXMAYktgZzXbIRT3TjIJlAo
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "01201831058cc69320811aa9bddc64258121a9066f2c993ffe8dccab407ef503ae310a",
+      "host": "keybase.io",
+      "kid": "0120d4ce70a989ca10cfe4ed35dd1638120c357300624b606735db2114f74e3209940a",
+      "uid": "8d8d26e0174ba3fcd621d4c64375f819",
+      "username": "danallison"
+    },
+    "merkle_root": {
+      "ctime": 1508641217,
+      "hash": "2921f5d28514f6f49ba95362fcc06b40c287070bb8cb3e635b4b845cde2d2b5c4916389f74a7414c63c7751df4fdce57930c58428f251f60014425218586fdd1",
+      "hash_meta": "9f900b5f3718cf32e252b5c184c007a1186bfac4cd9033873e610d36090c7c22",
+      "seqno": 1613805
+    },
+    "service": {
+      "hostname": "danallison.github.io",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 1
+  },
+  "client": {
+    "name": "keybase.io go client",
+    "version": "1.0.24"
+  },
+  "ctime": 1508641268,
+  "expire_in": 504576000,
+  "prev": "e0a9dbb991213c8f6bfa418f77833669fdb9cd6c61acc7ec54dec5dcfa18c1a0",
+  "seqno": 15,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEg1M5wqYnKEM/k7TXdFjgSDDVzAGJLYGc12yEU904yCZQKp3BheWxvYWTFA097ImJvZHkiOnsia2V5Ijp7ImVsZGVzdF9raWQiOiIwMTIwMTgzMTA1OGNjNjkzMjA4MTFhYTliZGRjNjQyNTgxMjFhOTA2NmYyYzk5M2ZmZThkY2NhYjQwN2VmNTAzYWUzMTBhIiwiaG9zdCI6ImtleWJhc2UuaW8iLCJraWQiOiIwMTIwZDRjZTcwYTk4OWNhMTBjZmU0ZWQzNWRkMTYzODEyMGMzNTczMDA2MjRiNjA2NzM1ZGIyMTE0Zjc0ZTMyMDk5NDBhIiwidWlkIjoiOGQ4ZDI2ZTAxNzRiYTNmY2Q2MjFkNGM2NDM3NWY4MTkiLCJ1c2VybmFtZSI6ImRhbmFsbGlzb24ifSwibWVya2xlX3Jvb3QiOnsiY3RpbWUiOjE1MDg2NDEyMTcsImhhc2giOiIyOTIxZjVkMjg1MTRmNmY0OWJhOTUzNjJmY2MwNmI0MGMyODcwNzBiYjhjYjNlNjM1YjRiODQ1Y2RlMmQyYjVjNDkxNjM4OWY3NGE3NDE0YzYzYzc3NTFkZjRmZGNlNTc5MzBjNTg0MjhmMjUxZjYwMDE0NDI1MjE4NTg2ZmRkMSIsImhhc2hfbWV0YSI6IjlmOTAwYjVmMzcxOGNmMzJlMjUyYjVjMTg0YzAwN2ExMTg2YmZhYzRjZDkwMzM4NzNlNjEwZDM2MDkwYzdjMjIiLCJzZXFubyI6MTYxMzgwNX0sInNlcnZpY2UiOnsiaG9zdG5hbWUiOiJkYW5hbGxpc29uLmdpdGh1Yi5pbyIsInByb3RvY29sIjoiaHR0cHM6In0sInR5cGUiOiJ3ZWJfc2VydmljZV9iaW5kaW5nIiwidmVyc2lvbiI6MX0sImNsaWVudCI6eyJuYW1lIjoia2V5YmFzZS5pbyBnbyBjbGllbnQiLCJ2ZXJzaW9uIjoiMS4wLjI0In0sImN0aW1lIjoxNTA4NjQxMjY4LCJleHBpcmVfaW4iOjUwNDU3NjAwMCwicHJldiI6ImUwYTlkYmI5OTEyMTNjOGY2YmZhNDE4Zjc3ODMzNjY5ZmRiOWNkNmM2MWFjYzdlYzU0ZGVjNWRjZmExOGMxYTAiLCJzZXFubyI6MTUsInRhZyI6InNpZ25hdHVyZSJ9o3NpZ8RAndMgdaPCcShIoytWOs6ovMXy1MEZVCGEaAf1SuRdEqL3IjBM7Pb2Ud0OjIacjAT8USyWNhhmGVt/lIWIYOZwAqhzaWdfdHlwZSCkaGFzaIKkdHlwZQildmFsdWXEIO7uqCCQY+RIw+qKhE/xkxzUO9clNR/U8zzA5rOAtvxDo3RhZ80CAqd2ZXJzaW9uAQ==
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/danallison
+
+==================================================================
