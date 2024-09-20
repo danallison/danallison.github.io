@@ -1,6 +1,6 @@
 # Ibis
 
-<img src="ibis.png" width="400px">
+<img src="images/ibis.png" width="400px">
 
 Ibis is the name of a collection of projects led by Dan Allison re: group coordination and collective intelligence.
 
