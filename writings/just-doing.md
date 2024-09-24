@@ -6,9 +6,9 @@ This is a 3 part thread about Just Doing, an approach to taking action that I’
 
 Each of the 3 parts tries to answer a question:
 
-Part 1: What is self-control really?
-Part 2: Where does motivation come from?
-Part 3: How do intentions translate into actions?
+* Part 1: What is self-control really?
+* Part 2: Where does motivation come from?
+* Part 3: How do intentions translate into actions?
 
 Just Doing is part of a larger framework (illustrated in the image below) that I use as a guide for being and living my life, based on Shinzen Young’s 3 aspects of mindfulness.
 
@@ -120,7 +120,7 @@ __Part 2__
 
 __Part 3__
 * Q: How do intentions translate into actions?
-* A: By a mysterious process that is discovered through playful
+* A: By a mysterious process that is discovered through playful experimentation
 
 ## Conclusion
 
