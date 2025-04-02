@@ -13,6 +13,7 @@ Hello World. My name is Dan. I draw stick figures and think about group coordina
 ## Links
 
 * [Ibis Coordination](https://ibis-coordination.com) (my professional thing)
+* [Drawings](/drawings)
 * [Writings](/writings)
 * [Merch](https://danallison.threadless.com/)
 * [twitter.com/danallison](https://twitter.com/danallison)
