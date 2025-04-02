@@ -1,2 +1,17 @@
-<img src="/images/danallison-profile-pic-face-icon-logo.png" width="64px">
-<a href="/"><h4>Dan Allison</h4></a>
+<a href="/"><img src="/images/danallison-profile-pic-face-icon-logo.png" width="64px"></a>
+<nav>
+  <h4>
+    <a href="/">Dan Allison</a>
+    {% assign path_parts = page.url | split: "/" %}
+    {% assign full_path = "" %}
+
+    {% for part in path_parts offset: 1 %}
+      {% assign full_path = full_path | append: "/" | append: part %}
+      {% if forloop.last %}
+        <span> / </span>{{ part }}
+      {% else %}
+        <span> / </span><a href="{{ full_path | append: '/' }}">{{ part }}</a>
+      {% endif %}
+    {% endfor %}
+  </h4>
+</nav>

@@ -7,9 +7,7 @@ permalink: /writings/just-doing
 
 # Just Doing
 
-_August 23, 2024_
-
-_note: [original twitter thread](https://x.com/danallison/status/1827114269856690460)_
+_August 23, 2024_. [original tweet thread](https://x.com/danallison/status/1827114269856690460)
 
 This is a 3 part thread about Just Doing, an approach to taking action that I’ve been trying to figure out ever since I was a kid and my parents would yell at me to “just do it” whenever I asked why I had to clean my room or whatever, as if it were obvious what “just do it” meant. I still don’t know what it means, but I’m just going to write this thread anyway.
 
