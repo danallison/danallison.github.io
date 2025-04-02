@@ -1,4 +1,13 @@
+---
+title: Just Doing
+layout: default
+permalink: /writings/just-doing
+---
+
+
 # Just Doing
+
+_August 23, 2024_
 
 _note: [original twitter thread](https://x.com/danallison/status/1827114269856690460)_
 
