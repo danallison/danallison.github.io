@@ -27,7 +27,7 @@ permalink: /drawings/
 {% assign current_month = "" %}
 <div>
 {% for file in files %}
-  {% if file.path contains '/drawings/' and file.extname == '.jpg' or file.extname == '.png' %}
+  {% if file.path contains '/drawings/' and file.extname == '.jpg' or file.extname == '.png' or file.extname == '.gif' %}
     {% assign date = file.name | slice: 0, 10 %}
     {% assign file_month = date | slice: 0, 7 %}
     {% if file_month != current_month %}
