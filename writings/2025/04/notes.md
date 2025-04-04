@@ -2,6 +2,16 @@
 
 Dear reader, these notes are mainly intended for my own use, but they are publicly available so that I can stay in the habit of sharing my writing publicly and keep a public record of my thoughts and things.
 
+## Thursday, 4/3
+
+I updated the website for [collectiveprovidence.church](https://collectiveprovidence.church) today. I want to maybe do more research and talk to people about this idea. I want to clarify the vision, help people see what's possible, but also give people a roadmap and set expectation and protect against all the ways that intentional communities can fail.
+
+* What does the process look like?
+* What are the benefits and the costs?
+* What are the risks?
+* How would it be organized?
+* How would leadership work? group decision-making?
+
 ## Wednesday, 4/2
 
 I'm planning to comb through my old twitter threads to try and extract writing that I can publish as standalone pieces in my [writings](/writings). I'm also in the process of adding all my daily drawings that are posted on twitter to [drawings](/drawings). There are hundreds of drawings, so this is going to take a while. So far I've gotten back through last November. I'm going to try to add a month's worth of drawings per day so I should be caught up in a couple weeks.
@@ -11,6 +21,20 @@ Generally, I'm trying to take the content I've been posting on twitter and add i
 ...
 
 Maybe I should write up some book reviews/recommendations.
+
+...
+
+### Things I want to write about
+
+* "Yes, and" as reciprocal leadership
+* Simple guards against sociopaths
+* Randomness and fairness
+* Good fences make good neighbors
+* Collective-player games
+* The Church of Collective Providence
+* Egrecho
+* Games Not Cults
+
 
 ## Tuesday, 4/1
 
