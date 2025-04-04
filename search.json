@@ -1,0 +1,14 @@
+---
+layout: null
+search_exclude: true
+---
+[
+  {% assign pages = site.pages | where_exp: "p", "p.search_exclude != true" %}
+  {% for page in pages %}
+    {
+      "title": {{ page.title | jsonify }},
+      "url": {{ page.url | relative_url | jsonify }},
+      "content": {{ page.content | strip_html | strip_newlines | jsonify }}
+    }{% if forloop.last == false %},{% endif %}
+  {% endfor %}
+]

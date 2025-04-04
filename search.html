@@ -1,0 +1,107 @@
+---
+layout: default
+title: Search
+permalink: /writings/search/
+search_exclude: true
+---
+
+<h1>Search</h1>
+<input type="text" id="search-box" placeholder="Search..." autofocus>
+<ul id="search-results"></ul>
+
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js"></script>
+<script>
+  let fuse = null;
+  let pages = [];
+
+  fetch('{{ "/search.json" | relative_url }}')
+    .then(response => response.json())
+    .then(data => {
+      pages = data;
+      fuse = new Fuse(pages, {
+        keys: ['title', 'content'],
+        includeMatches: true,
+        threshold: 0.00, // lower is stricter
+        ignoreLocation: true,
+        minMatchCharLength: 2,
+        useExtendedSearch: true,
+        shouldSort: true,
+        findAllMatches: true,
+        ignoreFieldNorm: true,
+
+      });
+    });
+
+  function highlight(text, matches) {
+    if (!matches) return text;
+    matches.sort((a, b) => a[0] - b[0]); // sort by start index
+    let result = '';
+    let lastIndex = 0;
+    for (const [start, end] of matches) {
+      result += text.slice(lastIndex, start);
+      result += '<mark>' + text.slice(start, end + 1) + '</mark>';
+      lastIndex = end + 1;
+    }
+    result += text.slice(lastIndex);
+    return result;
+  }
+
+  document.getElementById('search-box').addEventListener('input', function (e) {
+    const query = e.target.value.trim();
+    const resultsList = document.getElementById('search-results');
+    resultsList.innerHTML = '';
+
+    if (query && fuse) {
+      const results = fuse.search(query);
+      // console.log(results)
+      results.forEach(result => {
+        const item = result.item;
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = item.url;
+        const titleMatch = result.matches.find(m => m.key === 'title');
+        a.innerHTML = titleMatch
+          ? highlight(item.title, titleMatch.indices)
+          : item.title;
+        const snippet = document.createElement('p');
+        const contentMatch = result.matches.find(m => m.key === 'content');
+        const content = item.content || '';
+        const fullMatchIndex = content.toLowerCase().indexOf(query.toLowerCase());
+        const indices = fullMatchIndex === -1 ? contentMatch.indices : [[fullMatchIndex, fullMatchIndex + query.length - 1]];
+        const start = contentMatch ? indices[0][0] : 0;
+        const excerpt = content.slice(start, start + 100);
+        snippet.innerHTML = contentMatch
+          ? highlight(excerpt, indices.map(i => [i[0] - start, i[1] - start]))
+          : excerpt;
+        li.appendChild(a);
+        li.appendChild(snippet);
+        resultsList.appendChild(li);
+      });
+    }
+  });
+</script>
+
+<style>
+#search-box {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 1em;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+#search-results li {
+  margin-bottom: 1em;
+}
+
+#search-results p {
+  margin: 0.25em 0 0;
+  font-size: 0.9em;
+  color: #555;
+}
+
+mark {
+  background-color: yellow;
+  font-weight: bold;
+}
+</style>

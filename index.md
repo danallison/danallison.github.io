@@ -2,6 +2,7 @@
 title: Dan Allison
 layout: default-no-header
 permalink: /
+search_exclude: true
 ---
 
 <img src="/images/danallison-profile-pic-face-icon-logo.png" width="64px">
