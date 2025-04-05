@@ -10,7 +10,7 @@
       {% if forloop.last %}
         <span> / </span>{{ part }}
       {% else %}
-        <span> / </span><a href="{{ full_path | append: '/' }}">{{ part }}</a>
+        <span> / </span><a href="{{ full_path }}">{{ part }}</a>
       {% endif %}
     {% endfor %}
   </h4>

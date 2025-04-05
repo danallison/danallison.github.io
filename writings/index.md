@@ -11,9 +11,9 @@ search_exclude: true
 
 * [What I Do](/writings/what-i-do)
 * [Collective Providence](/writings/collective-providence)
-* _Acceptance Voting_ (placeholder)
-* _Collective-player Games_ (placeholder)
-* _Igloo Spiral Model of Group Coordination_ (placeholder)
+* [Acceptance Voting](/writings/acceptance-voting)
+* [Collective-player Games](/writings/collective-player-games)
+* [Igloo Spiral Model of Group Coordination](/writings/igloo-spiral-model)
 
 ## Blog
 
