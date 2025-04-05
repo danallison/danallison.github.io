@@ -2,6 +2,7 @@
 title: Igloo Spiral Model of Group Coordination
 layout: default
 permalink: /writings/igloo-spiral-model
+social_image: /images/Igloo_spiral.jpg
 ---
 
 # The Igloo Spiral Model of Group Coordination

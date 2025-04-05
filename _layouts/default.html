@@ -8,6 +8,17 @@
   <title>{{page.title}}</title>
   <meta name="color-scheme" content="light">
   <link rel="stylesheet" href="/css/github-markdown-light.css">
+  {% if page.social_image %}
+    <meta property="og:image" content="{{ page.social_image | relative_url }}">
+    <meta name="twitter:image" content="{{ page.social_image | relative_url }}">
+    <meta name="twitter:card" content="summary_large_image">
+  {% endif %}
+  <meta property="og:title" content="{{ page.title }}">
+  <meta property="og:description" content="{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}">
+  <meta property="og:url" content="{{ page.url | absolute_url }}">
+  <meta property="og:type" content="article">
+  <meta name="twitter:title" content="{{ page.title }}">
+  <meta name="twitter:description" content="{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}">
   <style>
     body {
       padding: 10px;
@@ -31,7 +42,11 @@
 </head>
 <body>
   <article class="markdown-body">
-    {% include header.html %}
+    {% if page.no_header %}
+      <!-- No header included -->
+    {% else %}
+      {% include header.html %}
+    {% endif %}
     {{content}}
   </article>
 </body>

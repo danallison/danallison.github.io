@@ -2,6 +2,7 @@
 title: Collective-player Games
 layout: default
 permalink: /writings/collective-player-games
+social_image: /images/ouija-board.jpg
 ---
 
 # Collective-player Games

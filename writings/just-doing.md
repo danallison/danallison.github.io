@@ -2,6 +2,7 @@
 title: Just Doing
 layout: default
 permalink: /writings/just-doing
+social_image: /images/inscrutable-exhortations.jpg
 ---
 
 
@@ -19,13 +20,13 @@ Each of the 3 parts tries to answer a question:
 
 Just Doing is part of a larger framework (illustrated in the image below) that I use as a guide for being and living my life, based on Shinzen Young’s 3 aspects of mindfulness.
 
-<img src="../images/just-doing-3x3.jpg" width="600px">
+<img src="/images/just-doing-3x3.jpg" width="600px">
 
 I’m starting this thread now as a publicly visible placeholder and will add each of the 3 parts to the thread as I complete it. These ideas have been bouncing around in my head for too long. So I’m designating this thread as the target destination to focus their expression on.
 
 ## Part 1: What is self-control really?
 
-<img src="../images/sailboat-tacking.jpg" width="400px">
+<img src="/images/sailboat-tacking.jpg" width="400px">
 
 Something has always bugged me about the concept of self-control, and it is this: who exactly is the controller, and who is being controlled? The concept implies inner conflict as a premise. If there were no inner conflict, there would be no need for control. But even worse, it’s unclear who this conflict is between. In order for there to be conflict, there must be at least two parties involved, but a self is supposed to be a singular thing. What gives?
 
@@ -47,7 +48,7 @@ This is something we will look at in Part 2 when we investigate the concept of m
 
 ## Part 2: Where does motivation come from?
 
-<img src="../images/inscrutable-exhortations.jpg" width="800px">
+<img src="/images/inscrutable-exhortations.jpg" width="800px">
 
 Before we get to motivation, let’s talk about shoulds, as in “I should do this” or “I should do that.”
 
@@ -75,7 +76,7 @@ Just because the inscrutable exhortations are inscrutable doesn’t mean you can
 
 ## Part 3: How do intentions translate into actions?
 
-<img src="../images/flying-ang.jpg" width="800px">
+<img src="/images/flying-ang.jpg" width="800px">
 
 If you’ve ever woken up after sleeping on your arm such that your arm went completely numb, then you know how weird it feels to try to move a part of your body that normally responds immediately to your intentions and watch it just sit there. You know how much heavier your arm feels when it’s numb and you can’t control it. It can be surprising, like “wow I didn’t realize how heavy my arm actually is”. But once you regain sensation in your arm, it feels light again.
 

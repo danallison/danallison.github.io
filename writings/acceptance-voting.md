@@ -2,6 +2,7 @@
 title: Acceptance Voting
 layout: default
 permalink: /writings/acceptance-voting
+social_image: /images/acceptance-voting-ui.png
 ---
 
 # Acceptance Voting

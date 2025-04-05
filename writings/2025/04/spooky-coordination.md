@@ -2,6 +2,7 @@
 title: Spooky Coordination
 layout: default
 permalink: /writings/spooky-coordination
+social_image: /images/ouija-board.jpg
 ---
 
 # Spooky Coordination

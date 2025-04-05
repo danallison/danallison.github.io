@@ -1,8 +1,10 @@
 ---
 title: Dan Allison
-layout: default-no-header
+layout: default
 permalink: /
 search_exclude: true
+no_header: true
+social_image: /images/danallison-profile-pic-face-icon-logo.png
 ---
 
 <img src="/images/danallison-profile-pic-face-icon-logo.png" width="64px">
