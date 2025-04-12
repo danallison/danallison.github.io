@@ -25,4 +25,3 @@ search_exclude: true
 ## Etc.
 
 * [Search](/writings/search)
-* [Braindumps](/writings/braindumps)
