@@ -26,6 +26,7 @@ Hello World. My name is Dan. I draw stick figures and think about group coordina
 * [Merch](https://danallison.threadless.com/)
 * [twitter.com/danallison](https://twitter.com/danallison)
 * [bsky.app/profile/danallison.bsky.social](https://bsky.app/profile/danallison.bsky.social)
+* [substack.com/@danallison](https://substack.com/@danallison)
 * [github.com/danallison](https://github.com/danallison)
 
 ## Contact
