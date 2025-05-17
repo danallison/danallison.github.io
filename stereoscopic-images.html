@@ -1,0 +1,46 @@
+---
+layout: default
+title: Stereoscopic Images
+permalink: /stereoscopic-images/
+search_exclude: true
+---
+<style>
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+  }
+  .gallery img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+</style>
+
+<h1>Stereoscopic Images</h1>
+<p>
+  I post daily stereoscopic photos on <a href="https://twitter.com/danallison">Twitter</a>.
+  The app I use to make them is <a href="https://apps.apple.com/us/app/crosscam/id1436262905">CrossCam</a>.
+  See <a href="https://moultano.wordpress.com/2025/02/24/you-should-make-cross-views/">this blog post</a> for instructions on how to view them and make your own.
+</p>
+
+{% assign files = site.static_files | reverse %}
+{% assign current_month = "" %}
+<div>
+{% for file in files %}
+  {% if file.path contains '/stereoscopic-images/' and file.extname == '.jpg' or file.extname == '.png' or file.extname == '.gif' %}
+    {% assign date = file.name | slice: 0, 10 %}
+    {% assign file_month = date | slice: 0, 7 %}
+    {% if file_month != current_month %}
+      {% assign current_month = file_month %}
+      </div>
+      <h2 id="{{ current_month }}">{{ current_month }}</h2>
+      <div class="gallery">
+    {% endif %}
+        <a href="{{ file.path | relative_url }}">
+          <img src="{{ file.path | relative_url }}" alt="stereo image" loading="lazy" id="{{ date }}">
+        </a>
+  {% endif %}
+{% endfor %}
+</div>

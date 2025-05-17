@@ -11,15 +11,19 @@ social_image: /images/danallison-profile-pic-face-icon-logo.png
 
 # Dan Allison
 
-Hello World. My name is Dan. I draw stick figures and think about group coordination and sometimes I make software. I do all of my professional work through [Ibis Coordination](https://ibis-coordination.com).
+Hello World. My name is Dan. I draw stick figures and work on group coordination projects.
+
+* [Drawings](/drawings)
+* [Stereoscopic Images](/stereoscopic-images)
+* [Writings](/writings)
 
 ## Projects
 
-* [Drawings](/drawings)
-* [Writings](/writings)
-* [Harmonic Team](https://harmonic.team)
+* [Fractal Seattle](https://fractalseattle.org/)
 * [Coordination Camp](https://coordination.camp)
 * [The Church of Collective Providence](https://collectiveprovidence.church)
+* [Ibis Coordination](https://ibis-coordination.com)
+* [Harmonic Team](https://harmonic.team)
 
 ## Links
 
