@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>n-gon fractal</title>
+<style>
+  body{margin:0;display:flex;justify-content:center;align-items:center;height:100vh;background: none;}
+  svg{width:80vmin;height:80vmin}
+  polygon{fill:none;stroke:none;stroke-width:1}
+</style>
+</head>
+<body>
+<svg id="svg"></svg>
+
+<script>
+(() => {
+  const N         = window.location.search.match(/n=(\d+)/)?.[1] || 6; // number of sides
+  if (N < 3 || N > 12) {
+    alert('n must be between 3 and 12');
+    return;
+  }
+  const DEPTH = window.location.search.match(/depth=(\d+)/)?.[1] || 5; // recursion depth
+  if (DEPTH < 0 || DEPTH > 10) {
+    alert('depth must be between 0 and 10');
+    return;
+  }
+  if (Math.pow(N, DEPTH) > 1000000) {
+    alert('n^depth must be less than 1,000,000');
+    return;
+  }
+  const IMG_URL   = window.location.search.match(/img=(https?[^&]+)/)?.[1] ||
+                    '/images/danallison-profile-pic-face-icon-logo_transparent-bg.png';
+  const CLIP = window.location.search.match(/clip=(true|false)/)?.[1] === 'true';
+  const RADIUS    = 256; // outer circum‑radius
+  const IMG_SCALE = 0.4; // image radius ÷ parent radius
+
+  const svg = document.getElementById('svg');
+  svg.setAttribute('viewBox', `${-RADIUS} ${-RADIUS} ${2*RADIUS} ${2*RADIUS}`);
+
+  let clipSeq = 0;
+
+  const vertices = (cx, cy, r, n, rot = 0) =>
+    Array.from({length:n}, (_, i) => {
+      const a = rot + i * 2 * Math.PI / n;
+      return [cx + r * Math.cos(a), cy + r * Math.sin(a)];
+    });
+
+  const ptsStr = pts => pts.map(p => p.join(',')).join(' ');
+
+  const drawLeaf = (cx, cy, r, n) => {
+    const poly = document.createElementNS('http://www.w3.org/2000/svg','polygon');
+    poly.setAttribute('points', ptsStr(vertices(cx, cy, r, n, -Math.PI / n)));
+    svg.appendChild(poly);
+  };
+
+  const addImage = (cx, cy, r, n) => {
+    const rImg    = r * IMG_SCALE;
+    let clipId = '';
+    let clip    = null;
+    if (CLIP) {
+      clipId  = `c${clipSeq++}`;
+      clip    = document.createElementNS('http://www.w3.org/2000/svg','clipPath');
+      clip.setAttribute('id', clipId);
+      const poly    = document.createElementNS('http://www.w3.org/2000/svg','polygon');
+      poly.setAttribute('points', ptsStr(vertices(cx, cy, rImg, n, -Math.PI / n)));
+      clip.appendChild(poly);
+      svg.appendChild(clip);
+    }
+
+    const img = document.createElementNS('http://www.w3.org/2000/svg','image');
+    img.setAttribute('href', IMG_URL);
+    img.setAttribute('x', cx - rImg);
+    img.setAttribute('y', cy - rImg);
+    img.setAttribute('width', 2*rImg);
+    img.setAttribute('height',2*rImg);
+    img.setAttribute('preserveAspectRatio','xMidYMid slice');
+    if (CLIP) img.setAttribute('clip-path', `url(#${clipId})`);
+    svg.appendChild(img);
+  };
+
+  const defer = (fn, ...args) => {
+    setTimeout(() => fn(...args), 0);
+  };
+
+  let queues = [];
+
+  const recurse = (cx, cy, r, n, d) => {
+    if(d === 0){
+      drawLeaf(cx, cy, r, n);
+      return;
+    }
+
+    const verts  = vertices(cx, cy, r, n, -Math.PI / n);
+    const childR = r / 2;
+
+    verts.forEach(([vx, vy]) => {
+      recurse((cx + vx)/2, (cy + vy)/2, childR, n, d-1);
+    });
+
+    // order queues by depth
+    queues[d] = queues[d] || [];
+    queues[d].push([cx, cy, r, n]);
+  };
+
+  recurse(0, 0, RADIUS, N, DEPTH);
+  queues.forEach((queue) => {
+    // draw smaller images first, then larger
+    queue.forEach(args => addImage(...args));
+  });
+  queues = [];
+})();
+</script>
+</body>
+</html>
