@@ -1,0 +1,7 @@
+collections:
+  drawings:
+    output: true
+    permalink: /drawings/:title
+  stereoscopic_images:
+    output: true
+    permalink: /stereoscopic-images/:title

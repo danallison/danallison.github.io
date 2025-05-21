@@ -1,0 +1,26 @@
+---
+layout: default
+---
+<h1>Drawings tagged “{{ page.tag }}”</h1>
+
+<style>
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+  }
+  .gallery img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    /* border-radius: 5px; */
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+</style>
+
+{% assign tagged = site.data.drawings | where: "tags", page.tag %}
+<div class="gallery">
+{% for item in tagged %}
+  <a href="/drawings/{{ item.pagename }}/"><img src="/drawings/{{ item.filename }}" loading="lazy"/></a>
+{% endfor %}
+</div>
