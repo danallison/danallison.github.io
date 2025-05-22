@@ -6,4 +6,6 @@ date: 2025-04-14
 tags:
   - birds
   - animals
+  - trees
+  - plants
 ---
