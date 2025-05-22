@@ -1,0 +1,15 @@
+---
+layout: default
+---
+<article>
+  <h1>{{ page.pagename }}</h1>
+  {% assign collection_dir = page.collection | replace: '_', '-' %}
+  <a href="/{{ collection_dir }}/{{ page.filename }}"><img src="/{{ collection_dir }}/{{ page.filename }}" alt="{{ page.pagename }}"/></a>
+  <!-- <p>{{ page.description }}</p>
+  <p>Date: {{ page.date }}</p> -->
+  <p>Tags:
+    {% for tag in page.tags %}
+    <a href="/tags/{{ tag | slugify }}/">#{{ tag }}</a>
+    {% endfor %}
+  </p>
+</article>

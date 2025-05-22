@@ -11,7 +11,7 @@ tags:
   - sitting
   - dotted-lines
   - hearts
-  - vibration
+  - vibrations
   # characters
   - stick-person
   - cats

@@ -1,7 +1,6 @@
 ---
 layout: default
 ---
-<h1>Drawings tagged “{{ page.tag }}”</h1>
 
 <style>
   .gallery {
@@ -18,9 +17,24 @@ layout: default
   }
 </style>
 
-{% assign tagged = site.drawings | where: "tags", page.tag %}
-<div class="gallery">
-{% for item in tagged %}
-  <a href="/drawings/{{ item.pagename }}/"><img src="/drawings/{{ item.filename }}" loading="lazy"/></a>
-{% endfor %}
-</div>
+<h1>Images tagged “{{ page.tag }}”</h1>
+
+{% assign tagged = site.drawings | where: "tags", page.tag | reverse %}
+{% if tagged.size > 0 %}
+  <h2>Drawings</h2>
+  <div class="gallery">
+  {% for item in tagged %}
+    <a href="/drawings/{{ item.pagename }}/"><img src="/drawings/{{ item.filename }}" loading="lazy"/></a>
+  {% endfor %}
+  </div>
+{% endif %}
+
+{% assign tagged = site.stereoscopic_images | where: "tags", page.tag | reverse  %}
+{% if tagged.size > 0 %}
+  <h2>Stereoscopic Images</h2>
+  <div class="gallery">
+  {% for item in tagged %}
+    <a href="/stereoscopic-images/{{ item.pagename }}/"><img src="/stereoscopic-images/{{ item.filename }}" loading="lazy"/></a>
+  {% endfor %}
+  </div>
+{% endif %}

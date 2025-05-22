@@ -1,14 +1,3 @@
 ---
-layout: default
+layout: image
 ---
-<article>
-  <h1>{{ page.pagename }}</h1>
-  <!-- <p>{{ page.description }}</p>
-  <p>Date: {{ page.date }}</p> -->
-  <p>Tags:
-    {% for tag in page.tags %}
-    <a href="/tags/{{ tag | slugify }}/">#{{ tag }}</a>
-    {% endfor %}
-  </p>
-  <a href="/drawings/{{ page.filename }}"><img src="/drawings/{{ page.filename }}" alt="{{ page.pagename }}"/></a>
-</article>

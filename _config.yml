@@ -5,3 +5,6 @@ collections:
   stereoscopic_images:
     output: true
     permalink: /stereoscopic-images/:title
+  tags:
+    output: true
+    permalink: /tags/:title
