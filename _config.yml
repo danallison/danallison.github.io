@@ -8,3 +8,4 @@ collections:
   tags:
     output: true
     permalink: /tags/:title
+permalink: pretty
