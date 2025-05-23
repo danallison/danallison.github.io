@@ -20,13 +20,17 @@ search_exclude: true
 </style>
 
 <h1>Drawings</h1>
+{% assign drawings = site.drawings | sort: 'date' %}
+{% assign drawings = drawings | reverse %}
+<p>
+  <strong>{{ drawings.size }}</strong> drawings as of {{ drawings[0].date | slice: 0, 10 }}.
+</p>
+
 <p>
   These are my daily drawings that I post on <a href="https://twitter.com/danallison">Twitter</a> and <a href="https://bsky.app/profile/danallison.bsky.social">Bluesky</a>.
   Some drawings are also available as t-shirts and prints at my <a href="https://danallison.threadless.com/">merch shop</a>.
 </p>
 
-{% assign drawings = site.drawings | sort: 'date' %}
-{% assign drawings = drawings | reverse %}
 {% assign current_month = "" %}
 <div>
 {% for drawing in drawings %}
@@ -43,3 +47,14 @@ search_exclude: true
       </a>
 {% endfor %}
 </div>
+
+<!-- <script>
+  fetch('/data/drawings.json')
+    .then(response => response.json())
+    .then(data => {
+      window.drawings = data;
+      drawings.forEach(drawing => {
+        drawing.element = document.getElementById(drawing.id);
+      });
+    });
+</script> -->
