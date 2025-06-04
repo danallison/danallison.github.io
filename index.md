@@ -30,6 +30,7 @@ Hello World. My name is Dan. I draw stick figures and work on group coordination
 * [twitter.com/danallison](https://twitter.com/danallison)
 * [bsky.app/profile/danallison.bsky.social](https://bsky.app/profile/danallison.bsky.social)
 * [substack.com/@danallison](https://substack.com/@danallison)
+* [instagram.com/danallison_wizardcat](https://www.instagram.com/danallison_wizardcat)
 * [github.com/danallison](https://github.com/danallison)
 
 ## Contact
