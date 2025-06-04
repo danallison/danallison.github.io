@@ -118,7 +118,7 @@ manus.letters = 'abcdefghijklmnopqrstuvwxyz'.split('')
 manus.vowels = 'aeiou'.split('')
 manus.numbers = manus.letters.map((letter, i) => i)
 manus.numberCoordinates = manus.letters.map(letter => manus.letterCoordinates[letter])
-manus.width = 640 * 2
+manus.width = 800
 manus.height = 480
 
 manus.createSVGElement = (tag, attrs) => {
@@ -345,24 +345,31 @@ manus.constellation = (side, word) => {
 //     lwd.setAttribute('r', wdr)
 // }, 80)
 
-manus.removeAllConstellations = () => {
+manus.removeAllConstellations = (side) => {
+    side = side || 'both'
+    const removeRight = side === 'right' || side === 'both'
+    const removeLeft = side === 'left' || side === 'both'
     const rh = document.getElementById('right-hand')
     const lh = document.getElementById('left-hand')
-    const rightConstellations = Array.prototype.flat.call(
+    const rightConstellations = rh && Array.prototype.flat.call(
         rh.getElementsByClassName('constellation')
-    )
-    const leftConstellations = Array.prototype.flat.call(
+    );
+    const leftConstellations = lh && Array.prototype.flat.call(
         lh.getElementsByClassName('constellation')
-    )
-    rightConstellations.forEach(constellation => {
-        rh.removeChild(constellation)
-    })
-    leftConstellations.forEach(constellation => {
-        lh.removeChild(constellation)
-    })
+    );
+    if (removeRight && rightConstellations) {
+      rightConstellations.forEach(constellation => {
+          rh.removeChild(constellation)
+      });
+    }
+    if (removeLeft && leftConstellations) {
+      leftConstellations.forEach(constellation => {
+          lh.removeChild(constellation)
+      });
+    }
     try {
-      document.getElementById('left-word-grid').remove()
-      document.getElementById('right-word-grid').remove()
+      removeLeft && document.getElementById('left-word-grid').remove()
+      removeRight && document.getElementById('right-word-grid').remove()
     } catch (e) {}
 }
 
