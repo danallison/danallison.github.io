@@ -279,6 +279,8 @@ manus.generateSVG = () => {
 }
 
 manus.constellation = (side, word) => {
+    // downcase and remove non-letter characters
+    word = word.toLowerCase().replace(/[^a-z]/g, '')
     const id = `${side}-constellation-${word}`
     const existingConstellation = document.getElementById(id)
     if (existingConstellation) return existingConstellation
