@@ -19,8 +19,7 @@ Hello World. My name is Dan. I draw stick figures and work on group coordination
 
 ## Projects
 
-* [Fractal Seattle](https://fractalseattle.org/). Local community project in Seattle
-* [Coordination Camp](https://coordination.camp). Online resource hub for learning, teaching, practicing group coordination
+* [Tetra [City]](https://tetracity.net/) & [Tetra Seattle](https://tetracity.net/seattle). Local community-building pattern & instance.
 * [Harmonic Team](https://harmonic.team). Open-source app for fast group coordination
 * Other projects currently on the [back burner](/back-burner-projects)
 
