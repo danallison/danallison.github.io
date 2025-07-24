@@ -10,7 +10,7 @@ These are projects that I'm not actively working on at the moment but hope to ge
 
 ## Writing
 
-* [Acceptance voting](/writings/acceptace-voting) paper with formal mathematical model and game theory analysis
+* [Acceptance voting](/writings/acceptance-voting) paper with formal mathematical model and game theory analysis
 
 ## Community
 
