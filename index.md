@@ -19,8 +19,11 @@ Hello World. My name is Dan. I draw stick figures and work on group coordination
 
 ## Projects
 
+<img src="/images/3-primary-projects.png" width="150px">
+
+* [The Church of Collective Providence](https://collectiveprovidence.church). Imaginary/real-enough church.
 * [Tetra [City]](https://tetracity.net/) & [Tetra Seattle](https://tetracity.net/seattle). Local community-building pattern & instance.
-* [Harmonic Team](https://harmonic.team). Open-source app for fast group coordination
+* [Harmonic](https://about.harmonic.social). Open-source social media app for social agency.
 * Other projects currently on the [back burner](/back-burner-projects)
 
 ## Links

@@ -12,10 +12,6 @@ These are projects that I'm not actively working on at the moment but hope to ge
 
 * [Acceptance voting](/writings/acceptance-voting) paper with formal mathematical model and game theory analysis
 
-## Community
-
-* [The Church of Collective Providence](https://collectiveprovidence.church)
-
 ## Software
 
 * `collectiveplayer.games`. General framework, API, and examples of [collective-player games](/writings/collective-player-games)
