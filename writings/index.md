@@ -17,6 +17,7 @@ search_exclude: true
 
 ## Blog
 
+* [Appreciation and the Perception of Value](/writings/appreciation-and-the-perception-of-value) _August 17, 2025_
 * [Request for Help](/writings/request-for-help) _August 2, 2025_
 * [Spooky Coordination](/writings/spooky-coordination) _April 2, 2025_
 * [Group Decisions, Before and After](/writings/group-decisions-before-and-after) _April 1, 2025_
