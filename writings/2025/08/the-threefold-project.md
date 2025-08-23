@@ -44,7 +44,7 @@ The "Church" is an idea more than an institution. It's a bit. And it's a bit wor
 
 [Tetra [City]](https://tetracity.net) represents the __*What*__ of the Threefold Project. It is an attempt to make manifest concrete examples of collective providence in the physical world, putting theory into practice, one city at a time, starting with Seattle.
 
-Tetra [City] aims to realize the coordination potential that the World Wide Web enables. This is not an attempt to return to some idealized version of past civic life. It is an attempt to create something that has never existed before, something better than we can currently imagine.
+Tetra [City] aims to realize the coordination potential that the World Wide Web enables. This is not an attempt to return to some idealized version of past civic life. It is an attempt to create something that has never existed before, something __better than we can currently imagine__.
 
 I am located in Seattle and intend to stay here for the long-term. Seattle is the first testing ground for this effort. Along the way I intend to also support and collaborate with other groups elsewhere in the world doing similar things within the larger ecosystem (e.g. [Fractals](https://fractalcampus.com/)), especially groups in the Pacific Northwest.
 
