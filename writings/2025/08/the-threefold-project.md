@@ -46,7 +46,9 @@ The "Church" is an idea more than an institution. It's a bit. And it's a bit wor
 
 Tetra [City] aims to realize the coordination potential that the World Wide Web enables. This is not an attempt to return to some idealized version of past civic life. It is an attempt to create something that has never existed before, something better than we can currently imagine.
 
-I am located in Seattle and intend to stay here for the long-term. Seattle is the first testing ground for this effort. Along the way I intend to also support and collaborate with other groups elsewhere in the world doing similar things within the larger ecosystem (e.g. [Fractals](https://fractalcampus.com/)), especially groups in the Pacific Northwest United States. Ultimately, the goal is not for Tetra specifically to grow and propagate but rather for the larger ecosystem to thrive. Tetra is one pattern among many possible patterns. Hopefully it will be a useful pattern that can succeed and replicate, but the ultimate end goal is collective providence for all, regardless of what patterns we use to get there.
+I am located in Seattle and intend to stay here for the long-term. Seattle is the first testing ground for this effort. Along the way I intend to also support and collaborate with other groups elsewhere in the world doing similar things within the larger ecosystem (e.g. [Fractals](https://fractalcampus.com/)), especially groups in the Pacific Northwest.
+
+Ultimately, the goal is not for Tetra specifically to grow and propagate but rather for the larger ecosystem to thrive. Tetra is one pattern among many possible patterns. Hopefully it will be a useful pattern that can succeed and replicate, but the ultimate end goal is collective providence for all, regardless of what patterns we use to get there.
 
 ## 3. Harmonic
 
