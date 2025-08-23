@@ -31,6 +31,17 @@ search_exclude: true
   Some drawings are also available as t-shirts and prints at my <a href="https://danallison.threadless.com/">merch shop</a>.
 </p>
 
+<h2>Favorites</h2>
+<div class="gallery">
+{% for drawing in drawings %}
+  {% if drawing.favorite %}
+    <a href="{{ drawing.url }}">
+      <img src="/drawings/{{ drawing['filename'] }}" alt="Drawing" loading="lazy" id="{{ drawing['pagename'] }}"/>
+    </a>
+  {% endif %}
+{% endfor %}
+</div>
+
 {% assign current_month = "" %}
 <div>
 {% for drawing in drawings %}
