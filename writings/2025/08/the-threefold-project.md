@@ -6,7 +6,7 @@ permalink: /writings/the-threefold-project
 
 # The Threefold Project
 
-_Incomplete Draft_
+_draft version 0.1_
 
 <img src="/images/3-primary-projects.png" width="400px">
 
@@ -36,7 +36,7 @@ From the website,
 
 > The Church of Collective Providence is an imaginary/real-enough institution established as a social convention for people who wish to join a collective that’s just religious enough to catalyze mutually supportive relationships in service of something greater than oneself, but not so religious that it undermines epistemic humility or individual self-sovereignty.
 
-The "Church" is an idea more than an institution.
+The "Church" is an idea more than an institution. It's a bit. And it's a bit worth committing to because committing to it enables further collective providence for the committers.
 
 ## 2. Tetra [City]
 
@@ -45,6 +45,8 @@ The "Church" is an idea more than an institution.
 [Tetra [City]](https://tetracity.net) represents the __*What*__ of the Threefold Project. It is an attempt to make manifest concrete examples of collective providence in the physical world, putting theory into practice, one city at a time, starting with Seattle.
 
 Tetra [City] aims to realize the coordination potential that the World Wide Web enables. This is not an attempt to return to some idealized version of past civic life. It is an attempt to create something that has never existed before, something better than we can currently imagine.
+
+I am located in Seattle and intend to stay here for the long-term. Seattle is the first testing ground for this effort. Along the way I intend to also support and collaborate with other groups elsewhere in the world doing similar things within the larger ecosystem (e.g. [Fractals](https://fractalcampus.com/)), especially groups in the Pacific Northwest United States. Ultimately, the goal is not for Tetra specifically to grow and propagate but rather for the larger ecosystem to thrive. Tetra is one pattern among many possible patterns. Hopefully it will be a useful pattern that can succeed and replicate, but the ultimate end goal is collective providence for all, regardless of what patterns we use to get there.
 
 ## 3. Harmonic
 

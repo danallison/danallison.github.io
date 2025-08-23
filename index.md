@@ -20,11 +20,11 @@ Hello World. My name is Dan. I draw stick figures and work on group coordination
 ## Projects
 
 <img src="/images/3-primary-projects.png" width="150px">
+[__The Threefold Project__](/writings/the-threefold-project)
 
-* [The Church of Collective Providence](https://collectiveprovidence.church). Imaginary/real-enough church.
-* [Tetra [City]](https://tetracity.net/) & [Tetra Seattle](https://tetracity.net/seattle). Local community-building pattern & instance.
-* [Harmonic](https://about.harmonic.social). Open-source social media app for social agency.
-* Other projects currently on the [back burner](/back-burner-projects)
+1. [The Church of Collective Providence](https://collectiveprovidence.church). Imaginary/real-enough church.
+2. [Tetra [City]](https://tetracity.net/) & [Tetra Seattle](https://tetracity.net/seattle). Local community-building pattern & instance.
+3. [Harmonic](https://about.harmonic.social). Open-source social media app for social agency.
 
 ## Links
 
