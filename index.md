@@ -19,12 +19,6 @@ Hello World. My name is Dan. I draw stick figures and work on group coordination
 
 ## Projects
 
-### [The Sticker Distribution Game](https://www.kickstarter.com/projects/dan-allison/the-sticker-distribution-game)
-
-[<img src="/images/sticker-flower-bg1_cropped16x9-landscape.jpg" width="200px">](https://www.kickstarter.com/projects/dan-allison/the-sticker-distribution-game)
-
-On [Kickstarter](https://www.kickstarter.com/projects/dan-allison/the-sticker-distribution-game) now! Runs until September 18th, 2025.
-
 ### [The Threefold Project](/writings/the-threefold-project)
 
 [<img src="/images/3-primary-projects.png" width="150px">](/writings/the-threefold-project)
@@ -32,6 +26,12 @@ On [Kickstarter](https://www.kickstarter.com/projects/dan-allison/the-sticker-di
 1. [The Church of Collective Providence](https://collectiveprovidence.church). Imaginary/real-enough church.
 2. [Tetra [City]](https://tetracity.net/) & [Tetra Seattle](https://tetracity.net/seattle). Local community-building pattern & instance.
 3. [Harmonic](https://about.harmonic.social). Open-source social media app for social agency.
+
+### [The Sticker Distribution Game](https://www.kickstarter.com/projects/dan-allison/the-sticker-distribution-game)
+
+[<img src="/images/sticker-flower-bg1_cropped16x9-landscape.jpg" width="200px">](https://www.kickstarter.com/projects/dan-allison/the-sticker-distribution-game)
+
+Global game of distributing stickers person-to-person with no traditional forms of shipping.
 
 ## Links
 
