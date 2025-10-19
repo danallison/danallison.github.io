@@ -6,7 +6,7 @@ permalink: /writings/cartoon-magick
 
 # Cartoon Magick
 
-_incomplete draft. last updated 2025-10-15_
+_incomplete draft. last updated 2025-10-19_
 
 <img src="/drawings/2025-07-27_tuning-in-hand-drawn.jpg" width="300px">
 
