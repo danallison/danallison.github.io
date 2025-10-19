@@ -17,6 +17,7 @@ search_exclude: true
 
 ## Blog
 
+* [Max Fun Maslow](/writings/max-fun-maslow) _last updated 2025-10-19_
 * [Cartoon Magick](/writings/cartoon-magick) _incomplete draft. last updated 2025-10-19_
 * [Appreciation and the Perception of Value](/writings/appreciation-and-the-perception-of-value) _August 17, 2025_
 * [Request for Help](/writings/request-for-help) _August 2, 2025_
