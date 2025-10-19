@@ -54,21 +54,45 @@ The finger that points at the moon is not the moon. Likewise, the reflection of 
 
 Optical meditation is meditation on the visual appearance of things as both reflections of an underlying reality that is unseen and projections of one's expectations about that underlying reality. It is a practice of experiencing images in different ways through intention.
 
-Using the famous rabbit duck illusion as an example, you can practice switching between seeing the rabbit and seeing the duck. Practicing this perceptual shift gives you greater perceptual freedom.
-
 [Rabbit duck optical illusion]
 
-Other examples of optical meditation include using Metatron's Cube to visualize all of the Platonic solids.
+Using the famous rabbit duck illusion as an example, you can practice switching between seeing the rabbit and seeing the duck. Practicing this perceptual shift gives you greater perceptual freedom.
 
 [Metatron's cube]
 
-Something something "ways of looking" from [_Seeing That Frees_](https://hermesamara.org/seeing-that-frees) by Rob Burbea.
+Other examples of optical meditation include using Metatron's Cube to visualize all of the Platonic solids.
 
-#### Tarot
+Relevant books:
 
-[TODO]
+* [_Visual Intelligence_](https://www.visualintelligencebook.com/) by Amy Herman
+* [_Seeing That Frees_](https://hermesamara.org/seeing-that-frees) by Rob Burbea
 
 #### Doodling
 
 [TODO]
 
+Relevant books:
+
+* [_Harold and the Purple Crayon_](https://en.wikipedia.org/wiki/Harold_and_the_Purple_Crayon) by Crockett Johnson
+* [_Zen Mind, Beginner's Mind_](https://www.shambhala.com/zen-mind-beginner-s-mind-9781611808414.html) by Shunryu Suzuki
+
+#### Visual writing
+
+[TODO]
+
+Relevant books:
+
+* [_Unflattening_](https://www.hup.harvard.edu/books/9780674744431) by Nick Sousanis
+* [_Understanding Comics_](https://www.scottmccloud.com/2-print/1-uc/) by Scott McCloud
+
+#### Tarot
+
+[TODO]
+
+#### Simplifying
+
+[TODO]
+
+Relevant books:
+
+* [_Tao Te Ching_](https://en.wikipedia.org/wiki/Tao_Te_Ching) by Lao Tzu
