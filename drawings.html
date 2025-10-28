@@ -23,11 +23,15 @@ search_exclude: true
 {% assign drawings = site.drawings | sort: 'date' %}
 {% assign drawings = drawings | reverse %}
 <p>
-  <strong>{{ drawings.size }}</strong> drawings as of {{ drawings[0].date | slice: 0, 10 }}.
+  <strong>{{ drawings.size }}</strong> public drawings as of {{ drawings[0].date | slice: 0, 10 }}.
 </p>
 
+<p>Subscribe to my <a href="https://danallison.substack.com/">Substack</a> to get a new drawing in your inbox everyday. Paid subscribers also get an <em>exclusive</em> new drawing everyday, not available publicly.</p>
+
+<iframe src="https://danallison.substack.com/embed" width="480" height="150" style="border:none; display: block; margin: 0 auto; background:white;" frameborder="0" scrolling="no"></iframe>
+
 <p>
-  These are my daily drawings that I post on <a href="https://twitter.com/danallison">Twitter</a>, <a href="https://bsky.app/profile/danallison.bsky.social">Bluesky</a>, and <a href="https://www.instagram.com/danallison_wizardcat">Instagram</a>.
+  I also post my public daily drawings on <a href="https://twitter.com/danallison">Twitter</a>, <a href="https://bsky.app/profile/danallison.bsky.social">Bluesky</a>, and <a href="https://www.instagram.com/danallison_wizardcat">Instagram</a>.
   Some drawings are also available as t-shirts and prints at my <a href="https://danallison.threadless.com/">merch shop</a>.
 </p>
 

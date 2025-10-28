@@ -9,7 +9,6 @@ search_exclude: true
 
 ## Explainers
 
-* [What I Do](/writings/what-i-do)
 * [Collective Providence](/writings/collective-providence)
 * [Acceptance Voting](/writings/acceptance-voting) (and [Strategic Acceptance Voting](/writings/strategic-acceptance-voting))
 * [Collective-player Games](/writings/collective-player-games)

@@ -14,7 +14,6 @@ social_image: /images/danallison-profile-pic-face-icon-logo.png
 Hello World. My name is Dan. I draw stick figures and work on group coordination projects.
 
 * [Drawings](/drawings)
-* [Stereoscopic Images](/stereoscopic-images)
 * [Writings](/writings)
 
 ## Projects
@@ -33,14 +32,27 @@ Hello World. My name is Dan. I draw stick figures and work on group coordination
 
 Global game of distributing stickers person-to-person with no traditional forms of shipping.
 
+### [Daily Drawings](/drawings)
+
+New drawings everyday on <a href="https://danallison.substack.com/">Substack</a> and <a href="https://twitter.com/danallison">Twitter</a>.
+
+<iframe src="https://danallison.substack.com/embed" width="480" height="150" style="border:1px solid #EEE; background:white;" frameborder="0" scrolling="no"></iframe>
+
 ## Links
 
-* [Merch](https://danallison.threadless.com/)
-* [twitter.com/danallison](https://twitter.com/danallison)
+### Social
+
+* __[substack.com/@danallison](https://substack.com/@danallison)__
+* __[twitter.com/danallison](https://twitter.com/danallison)__
 * [bsky.app/profile/danallison.bsky.social](https://bsky.app/profile/danallison.bsky.social)
-* [substack.com/@danallison](https://substack.com/@danallison)
 * [instagram.com/danallison_wizardcat](https://www.instagram.com/danallison_wizardcat)
 * [github.com/danallison](https://github.com/danallison)
+
+### Other links
+
+* [Stereoscopic images](/stereoscopic-images)
+* [Hand mnemonic system](/hands)
+* [Merch](https://danallison.threadless.com/)
 
 ## Contact
 
