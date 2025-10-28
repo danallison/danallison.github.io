@@ -36,7 +36,7 @@ Global game of distributing stickers person-to-person with no traditional forms 
 
 New drawings everyday on <a href="https://danallison.substack.com/">Substack</a> and <a href="https://twitter.com/danallison">Twitter</a>.
 
-<iframe src="https://danallison.substack.com/embed" width="480" height="150" style="border:1px solid #EEE; background:white;" frameborder="0" scrolling="no"></iframe>
+<iframe src="https://danallison.substack.com/embed" width="480" height="150" style="max-width: 100%; border:1px solid #EEE; background:white;" frameborder="0" scrolling="no"></iframe>
 
 ## Links
 
