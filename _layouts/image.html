@@ -16,4 +16,16 @@ layout: default
       {% endfor %}
     </p>
   {% endif %}
+  <ul>
+  {% if page.substack_post %}
+    <li>
+      <a href="{{ page.substack_post }}/">substack post</a>
+    </li>
+  {% endif %}
+  {% if page.tweet %}
+    <li>
+      <a href="{{ page.tweet }}/">tweet</a>
+    </li>
+  {% endif %}
+  </ul>
 </article>
