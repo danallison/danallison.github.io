@@ -105,6 +105,8 @@ Memory requires novelty. Mnemonics work best when they involve exaggerated and r
 
 Relevant books:
 
+* [_The Art of Memory_](https://www.amazon.com/Art-Memory-Frances-Yates/dp/1847922929) by Frances Yates
+* [_Memory Craft_](https://www.amazon.com/Memory-Craft-Improve-Powerful-Methods/dp/1643133241) by Lynne Kelly
 * [_Moonwalking with Einstein_](https://en.wikipedia.org/wiki/Moonwalking_with_Einstein) by Joshua Foer
 
 #### Visual writing
