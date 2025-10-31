@@ -6,7 +6,7 @@ permalink: /writings/cartoon-magick
 
 # Cartoon Magick
 
-_incomplete draft. last updated 2025-10-19_
+_incomplete draft. last updated 2025-10-30_
 
 <img src="/drawings/2025-07-27_tuning-in-hand-drawn.jpg" width="300px">
 
@@ -28,9 +28,23 @@ Cartoons bring humor and playfulness where it is not typically found, which prov
 
 In fact, magick often works better when you _don't_ take it too seriously. It's a bit. It's a bit you are _committing_ to, but a bit nonetheless. Cartoons can make this apparent contradiction easier to navigate.
 
+## Cartoon Physics
+
+Another way to understand cartoon magick is through the lens of [cartoon physics](https://en.wikipedia.org/wiki/Cartoon_physics).
+
+Cartoon physics is like normal physics except you're allowed to break the rules if it's funny. It's like [jester's privilege](https://en.wikipedia.org/wiki/Jester#Jester's_privilege) but for physics. Classic examples include the Looney Tunes character Wile E. Coyote running off a cliff but not falling until he looks down and realizes that there's no ground beneath him.
+
+One way to think about cartoon magick is that it is the application of cartoon physics to real life. This is possible once you understand and internalize the ways in which our perceptual experience of reality is merely a cartoonish representation of a deeper reality that is fundamentally unknowable (afaik). The more you internalize these insights, the more you can use humor and playfulness to shift your experience of reality with intention and achieve seemingly impossible things! And if that doesn't work, you can at least use humor and playfulness to frame the situation in a way that allows you to enjoy the foolishness of it all.
+
+To get a sense of what these insights are that would allow for the application of cartoon physics to real life, a good place to start is Steven Lehar's [A Cartoon Epistemology](https://qualiacomputing.com/2022/12/28/cartoon-epistemology-by-steven-lehar-2003/).
+
 ## The Curriculum
 
-The following curriculum is my own recommended path for learning cartoon magick. You should find your own path, but the curriculum laid out here provides a useful structure that you can follow as much or as little as you wish. You can treat it as a linear sequence or as a choose-your-own-adventure landscape.
+The following curriculum is my own recommended path for learning cartoon magick. You should find your own path, but the curriculum laid out here provides a useful structure that you can follow as much or as little as you wish, __with one very important exception__.
+
+That exception is the book [_Harold and the Purple Crayon_](https://en.wikipedia.org/wiki/Harold_and_the_Purple_Crayon) by Crockett Johnson. This book is absolutely essential. It is not optional. It is required. Harold is the ultimate cartoon magician, living in a reality that is entirely his own creation. You must read this book many times and meditate on it.
+
+Once you have read _Harold and the Purple Crayon_, you may then proceed through the rest of curriculum.
 
 ### Foundations
 
@@ -44,9 +58,27 @@ Each of the following three books contains a set of exercises that provide impor
 
 #### Theoretical
 
-Steven Lehar's [A Cartoon Epistemology](https://qualiacomputing.com/2022/12/28/cartoon-epistemology-by-steven-lehar-2003/)
+* [A Cartoon Epistemology](https://qualiacomputing.com/2022/12/28/cartoon-epistemology-by-steven-lehar-2003/) by Steven Lehar
+* [_Flatland_](https://en.wikipedia.org/wiki/Flatland) by Edwin A. Abbott
 
 ### Practices
+
+#### Doodling
+
+[TODO]
+
+Relevant books:
+
+* [_Harold and the Purple Crayon_](https://en.wikipedia.org/wiki/Harold_and_the_Purple_Crayon) by Crockett Johnson
+* [_Zen Mind, Beginner's Mind_](https://www.shambhala.com/zen-mind-beginner-s-mind-9781611808414.html) by Shunryu Suzuki
+
+#### Drawing meditation
+
+Simple practice. Draw while meditating. Meditate while drawing. Synchronize your breath with the movement of the lines on the page.
+
+Relevant books:
+
+* [_The Zen of Seeing_](https://www.amazon.com/Zen-Seeing-Drawing-Meditation/dp/0394719689) by Frederick Franck
 
 #### Optical meditation
 
@@ -67,14 +99,13 @@ Relevant books:
 * [_Visual Intelligence_](https://www.visualintelligencebook.com/) by Amy Herman
 * [_Seeing That Frees_](https://hermesamara.org/seeing-that-frees) by Rob Burbea
 
-#### Doodling
+#### Mnemonic visualization
 
-[TODO]
+Memory requires novelty. Mnemonics work best when they involve exaggerated and ridiculous imagery, cartoonish imagery.
 
 Relevant books:
 
-* [_Harold and the Purple Crayon_](https://en.wikipedia.org/wiki/Harold_and_the_Purple_Crayon) by Crockett Johnson
-* [_Zen Mind, Beginner's Mind_](https://www.shambhala.com/zen-mind-beginner-s-mind-9781611808414.html) by Shunryu Suzuki
+* [_Moonwalking with Einstein_](https://en.wikipedia.org/wiki/Moonwalking_with_Einstein) by Joshua Foer
 
 #### Visual writing
 
