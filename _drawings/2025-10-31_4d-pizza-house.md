@@ -7,4 +7,5 @@ tweet: https://x.com/danallison/status/1984492961946878355
 substack_post: https://danallison.substack.com/p/saturday-november-1st-2025
 tags:
   - house
+  - doors
 ---
