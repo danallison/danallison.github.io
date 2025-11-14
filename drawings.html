@@ -65,7 +65,7 @@ search_exclude: true
 {% for drawing in drawings %}
   {% if drawing.favorite %}
     <a href="{{ drawing.url }}">
-      <img src="/drawings/{{ drawing['filename'] }}" alt="Drawing" loading="lazy" id="{{ drawing['pagename'] }}"/>
+      <img src="/svgs/{{ drawing['pagename'] }}.svg" alt="{{ drawing['pagename'] }}" loading="lazy"/>
     </a>
   {% endif %}
 {% endfor %}
@@ -76,6 +76,7 @@ search_exclude: true
 {% for drawing in drawings %}
   {% assign date = drawing.date %}
   {% assign month = date | slice: 0, 7 %}
+  {% assign file_extension = drawing.filename | split: '.' | last %}
   {% if month != current_month %}
     {% assign current_month = month %}
     </div>
@@ -83,7 +84,11 @@ search_exclude: true
     <div class="gallery">
   {% endif %}
       <a href="{{ drawing.url }}">
-        <img src="/drawings/{{ drawing['filename'] }}" alt="Drawing" loading="lazy" id="{{ drawing['pagename'] }}"/>
+        {% if file_extension == "gif" %}
+          <img src="/drawings/{{ drawing['filename'] }}" alt="{{ drawing['pagename'] }}" loading="lazy"/>
+        {% else %}
+          <img src="/svgs/{{ drawing['pagename'] }}.svg" alt="{{ drawing['pagename'] }}" loading="lazy"/>
+        {% endif %}
       </a>
 {% endfor %}
 </div>

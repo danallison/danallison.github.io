@@ -17,6 +17,11 @@ layout: default
     </p>
   {% endif %}
   <ul>
+  {% if collection_dir == 'drawings' %}
+    <li>
+      <a href="/svgs/{{ page.pagename }}.svg">SVG</a>
+    </li>
+  {% endif %}
   {% if page.substack_post %}
     <li>
       <a href="{{ page.substack_post }}/">substack post</a>
