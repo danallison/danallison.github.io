@@ -26,11 +26,15 @@ search_exclude: true
   <strong>{{ drawings.size }}</strong> public drawings as of {{ drawings[0].date | slice: 0, 10 }}.
 </p>
 
-<p>
-  Subscribe to my <a href="https://danallison.substack.com/">Substack</a> to get new drawings in your inbox everyday.
-</p>
-
-<iframe src="https://danallison.substack.com/embed" width="480" height="150" style="max-width: 100%; border:none; display: block; margin: 0 auto; background:white;" frameborder="0" scrolling="no"></iframe>
+<div>
+  <p>
+    <img src="/drawings/2025-07-05_behind-our-eyes.jpg" alt="Drawing" loading="lazy" id="behind-our-eyes" style="width:400px;max-width:100%;display:block;margin:4px auto 16px auto;box-shadow:0 0 10px rgba(0,0,0,0.1);"/>
+    This drawing, titled "behind our eyes", is by far my most popular drawing. If you've only seen one of my drawings before, it's probably this one.
+  </p>
+  <p>
+    You can read more about the story of this drawing <a href="https://www.kickstarter.com/projects/dan-allison/the-sticker-distribution-game">here</a>.
+  </p>
+</div>
 
 <h5>Copyright</h5>
 <div style="font-size: 0.7em;">
@@ -49,17 +53,6 @@ search_exclude: true
   </p>
 </div>
 
-<h2>Behind our eyes</h2>
-<div>
-  <p>
-    <img src="/drawings/2025-07-05_behind-our-eyes.jpg" alt="Drawing" loading="lazy" id="behind-our-eyes" style="width:400px;max-width:100%;display:block;margin:4px auto 16px auto;box-shadow:0 0 10px rgba(0,0,0,0.1);"/>
-    This drawing, titled "behind our eyes", is by far my most popular drawing. If you've only seen one of my drawings before, it's probably this one.
-  </p>
-  <p>
-    You can read more about the story of this drawing <a href="https://www.kickstarter.com/projects/dan-allison/the-sticker-distribution-game">here</a>.
-  </p>
-</div>
-
 <h2>Favorites</h2>
 <div class="gallery">
 {% for drawing in drawings %}
@@ -71,6 +64,14 @@ search_exclude: true
 {% endfor %}
 </div>
 
+<h2>Daily newsletter</h2>
+<p>
+  Subscribe to my <a href="https://danallison.substack.com/">Substack</a> to get new drawings in your inbox everyday.
+</p>
+
+<iframe src="https://danallison.substack.com/embed" width="480" height="150" style="max-width: 100%; border:none; display: block; margin: 0 auto; background:white;" frameborder="0" scrolling="no"></iframe>
+
+<h2>Daily drawings by month</h2>
 {% assign current_month = "" %}
 <div>
 {% for drawing in drawings %}
