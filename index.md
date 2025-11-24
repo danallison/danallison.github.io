@@ -16,6 +16,12 @@ Hello World. My name is Dan. I draw stick figures and work on group coordination
 * [Drawings](/drawings)
 * [Writings](/writings)
 
+## Book
+
+[<img src="/images/book-cover-volume-1.png" style="height:300px;max-width:100%;box-shadow:-3px 3px 10px rgba(0,0,0,0.3);"/>](https://www.lulu.com/shop/dan-allison/you-are-loved-you-are-free-volume-1/paperback/product-2meepn6.html?page=1&pageSize=4)
+
+My book [You are loved. You are free. Volume 1](https://www.lulu.com/shop/dan-allison/you-are-loved-you-are-free-volume-1/paperback/product-2meepn6.html?page=1&pageSize=4) is now available for purchase. The book contains over 250 drawings that I created between November 2023 and November 2025.
+
 ## Projects
 
 ### [The Threefold Project](/writings/the-threefold-project)
