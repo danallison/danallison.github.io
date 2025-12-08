@@ -1,0 +1,97 @@
+---
+layout: default
+title: Scribbles
+permalink: /scribbles/
+search_exclude: true
+---
+<style>
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+  }
+  .gallery img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+</style>
+
+<h1>Scribbles</h1>
+<img src="/images/scribbles-page/banner.png" alt="scribble" loading="lazy" style="width: 100%;"/>
+<p>
+  I love scribbles.
+</p>
+<p>
+  Scribbles are not replications of a visual experience like a landscape or human figure, nor are they instantiations of an abstract geometric shape like a circle or triangle, nor are they symbols that represent concepts or sounds like kanji or letters of the roman alphabet. Scribbles are not derived from anything other than themselves. They are their own origin point.
+</p>
+<p>
+  Scribbles are entirely unique and unpredictable. They arise out of pure spontaneity. In this way, they are alive. They are living beings. They have personality and express emotion. I do not know if they are conscious, but I would not be surprised if they are.
+</p>
+
+<h2>Scribble practice</h2>
+<p>
+  I like to approach scribbling as a meditative practice. My process has 3 steps.
+</p>
+<h3>Step 1: Drawing the circle</h3>
+<p>
+  <img src="/images/scribbles-page/scribbles-process_1-compass.jpg" alt="compass" loading="lazy" style="max-height:300px;"/>
+</p>
+<p>
+  In order for the scribble to have somewhere to land, I prepare a circle to serve as the container for the scribble.
+  The circle is drawn using a compass and <strong>Sakura Pigma Graphic pen</strong>. This pen makes a nice thick line.
+</p>
+<p>
+  The precisely measured circle provides a nice contrast for the chaotic scribble.
+</p>
+<h3>Step 2: Channeling the scribble</h3>
+<p>
+  <img src="/images/scribbles-page/scribbles-process_2-pilot-parallel.jpg" alt="parallel pen" loading="lazy" style="max-height:300px;"/>
+</p>
+<p>
+  For the scribble itself, I use a <strong>Pilot Parallel calligraphy pen</strong>.
+  Since this pen is designed for calligraphy, it is very expressive but it takes a bit of practice to make smooth continuous strokes without the tip getting stuck on the paper.
+  Scribbling with this pen is actually somewhat challenging, which is partly why I like to use it.
+  It requires hand motion that is both confident and delicate.
+</p>
+<p>
+  Before making any marks, I notice my breathing and relax my body. I try to let go of any desire for the scribble to look a certain way. I let go of my identifcation as the creator of the scribble and invite the scribble to create itself through me.
+  I try to step out of the way and allow the scribble to come through however it wants to.
+  I take a perspective of playful curiosity to discover how the scribble will appear.
+</p>
+<p>
+  The entire scribble is completed in a single stroke. It only takes a second or two to complete.
+</p>
+<h3>Step 3: Revealing the face</h3>
+<p>
+  <img src="/images/scribbles-page/scribbles-process_3-micron.jpg" alt="micron pen" loading="lazy" style="max-height:300px;"/>
+</p>
+<p>
+  In order for the personality of the scribble to be more visible to human eyes, I give each scribble a face.
+</p>
+<p>
+  For the face, I use a <strong>Sakura Pigma Micron pen</strong>, which is the pen I use most of the time in my other drawings.
+</p>
+<p>
+  Before drawing the face, I imagine that the face is already present and my job is simply to reveal it. I take a moment to listen visually in order to sense where the face is so that I can draw the marks that make it visible.
+</p>
+
+{% assign images = site.scribbles | sort: 'date' %}
+{% assign images = images | reverse %}
+{% assign current_month = "" %}
+<div>
+{% for image in images %}
+  {% assign date = image.date %}
+  {% assign month = date | slice: 0, 7 %}
+  {% if month != current_month %}
+    {% assign current_month = month %}
+    </div>
+    <h2 id="{{ current_month }}">{{ current_month }}</h2>
+    <div class="gallery">
+  {% endif %}
+      <a href="{{ image.url }}">
+        <img src="/scribbles/{{ image.filename }}" alt="scribble" loading="lazy" id="{{ image.pagename }}"/>
+      </a>
+{% endfor %}
+</div>

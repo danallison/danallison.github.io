@@ -5,6 +5,9 @@ collections:
   stereoscopic_images:
     output: true
     permalink: /stereoscopic-images/:title/
+  scribbles:
+    output: true
+    permalink: /scribbles/:title
   tags:
     output: true
     permalink: /tags/:title/
