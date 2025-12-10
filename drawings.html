@@ -23,7 +23,7 @@ search_exclude: true
 {% assign drawings = site.drawings | sort: 'date' %}
 {% assign drawings = drawings | reverse %}
 <p>
-  <strong>{{ drawings.size }}</strong> public drawings as of {{ drawings[0].date | slice: 0, 10 }}.
+  <strong>{{ drawings.size }}</strong> public drawings as of {{ drawings[0].date | slice: 0, 10 }} (not including <a href="/scribbles/">scribbles</a>).
 </p>
 
 <div>
