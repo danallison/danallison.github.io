@@ -7,7 +7,7 @@ social_image: /images/acceptance-voting-ui.png
 
 # Acceptance Voting
 
-_Last updated April 12, 2025_
+_Last updated December 13th, 2025_
 
 <img src="/images/acceptance-voting-ui.png" style="margin:0 auto; box-shadow:0 0 5px rgba(0,0,0,0.5); width: 400px; max-width: 100%;">
 
@@ -17,11 +17,13 @@ Acceptance voting is a voting method similar to [approval voting](https://en.wik
 
 For each option, voters indicate first whether they would accept the option and second whether they prefer the option. The winning option is the one with the greatest acceptance, and if there is a tie then the winning option is the one with the greatest preference.
 
-## The Problem with Approval Voting
+## Problems with Approval Voting
 
-One common criticism of approval voting is that it is confusing to voters. What exactly does “approval” mean? It’s not as obvious as advocates of approval voting often assume.
+Approval voting works very well in scenarios where there is a large number of voters and ties are unlikely, such as in democratic elections of political representatives. But in smaller groups where ties are common, approval voting is susceptible to several problems.
 
-The answer that acceptance voting posits is that the concept of approval is a conflation of acceptance and preference, and it is better to separate those concepts explicitly.
+One such problem is related to the so-called [tyranny of the majority](https://en.wikipedia.org/wiki/Tyranny_of_the_majority) where the group selects an option that is unacceptable to a minority of voters despite the fact that the majority would genuinely be willing to compromise if they were aware of the problem. In these cases, acceptance voting provides a way for voters to express acceptance first so that the group can be as inclusive as possible while still factoring in preference information to select from the subset of options that everyone finds acceptable.
+
+Another problem with approval voting in small groups is the [Abilene paradox](https://en.wikipedia.org/wiki/Abilene_paradox), which occurs when the group selects an option that everyone accepts but no one actually wants. This occurs because members of the group misinterpret expressions of acceptance as expressions of preference. Acceptance voting solves this by making a clear distinction between acceptance and preference.
 
 ## Greatest Acceptance = Least Resistance
 
