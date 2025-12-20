@@ -31,6 +31,15 @@ layout: default
     <li>
       <a href="{{ page.tweet }}/">tweet</a>
     </li>
+  {% elsif collection_dir == 'drawings' %}
+    {% assign base_ts = page.date | date: "%s" %}
+    {% assign until_ts = base_ts | plus: 172800 %}
+    {% assign until_date = until_ts | date: "%Y-%m-%d" %}
+    {% assign since_date = page.date | date: "%Y-%m-%d" %}
+    {% assign q = 'from:danallison since:' | append: since_date | append: ' until:' | append: until_date | append: ' loved free' %}
+    <li>
+      <a href="https://x.com/search?q={{ q | url_encode }}&f=live">tweet search</a>
+    </li>
   {% endif %}
   {% if page.youtube %}
     <li>
