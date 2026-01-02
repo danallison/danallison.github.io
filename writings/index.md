@@ -12,11 +12,10 @@ search_exclude: true
 * [Collective Providence](/writings/collective-providence)
 * [Acceptance Voting](/writings/acceptance-voting) (and [Strategic Acceptance Voting](/writings/strategic-acceptance-voting))
 * [Collective-player Games](/writings/collective-player-games)
-* [Igloo Spiral Model of Group Coordination](/writings/igloo-spiral-model)
 
 ## Blog
 
-* [Cartoon Magick](/writings/cartoon-magick) _incomplete draft. last updated 2025-10-30_
+* [Cartoon Magick](/writings/cartoon-magick) _last updated 2025-10-30_
 * [Max Fun Maslow](/writings/max-fun-maslow) _last updated 2025-10-19_
 * [Appreciation and the Perception of Value](/writings/appreciation-and-the-perception-of-value) _August 17, 2025_
 * [Request for Help](/writings/request-for-help) _August 2, 2025_
@@ -28,3 +27,4 @@ search_exclude: true
 ## Etc.
 
 * [Search](/writings/search)
+* [Drafts](/writings/drafts)
