@@ -8,6 +8,9 @@ collections:
   scribbles:
     output: true
     permalink: /scribbles/:title
+  stereo_tarot_cards:
+    output: true
+    permalink: /stereo-tarot/:title
   tags:
     output: true
     permalink: /tags/:title/

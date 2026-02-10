@@ -1,0 +1,18 @@
+---
+layout: default
+---
+<article>
+  <h4>Deck {{ page.deck_number }}</h4>
+  <h1>{{ page.name }}</h1>
+  <img src="/images/stereo-tarot/deck-{{page.deck_number}}/raster/stereo-card_{{page.title}}.jpg" alt="{{ page.name }}" style="max-height: 400px; margin: 0 auto;"/>
+  <div>
+    <h2>Base cards</h2>
+    <ul>
+      {% for base_card in page.base_cards %}
+        <li>{{base_card}}</li>
+      {% endfor %}
+    </ul>
+    <h2>Description</h2>
+    {{page.content}}
+  </div>
+</article>
