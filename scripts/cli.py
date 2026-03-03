@@ -111,6 +111,12 @@ def cmd_to_png(args):
                 print(f"FAIL  {futures[fut].name}: {e}")
 
 
+def cmd_daily_drawing(args):
+    """Fetch goodnight drawings from Community Archive."""
+    from daily_drawing import daily_drawing
+    daily_drawing(since=args.since, force=args.force, commit=args.commit)
+
+
 def main():
     parser = argparse.ArgumentParser(
         description='Jekyll site automation CLI',
@@ -157,6 +163,13 @@ def main():
     p_png.add_argument('--overwrite', action='store_true', help='Overwrite existing PNGs')
     p_png.add_argument('--jobs', type=int, default=os.cpu_count() or 4, help='Parallel jobs')
     p_png.set_defaults(func=cmd_to_png)
+
+    # daily-drawing
+    p_daily = subparsers.add_parser('daily-drawing', help='Fetch goodnight drawings from Community Archive')
+    p_daily.add_argument('--since', help='Start date YYYY-MM-DD (default: most recent local drawing)')
+    p_daily.add_argument('--force', action='store_true', help='Re-download even if date exists locally')
+    p_daily.add_argument('--commit', action='store_true', help='Commit changes after processing')
+    p_daily.set_defaults(func=cmd_daily_drawing)
 
     args = parser.parse_args()
     args.func(args)
