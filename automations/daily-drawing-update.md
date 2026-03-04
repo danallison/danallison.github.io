@@ -78,13 +78,14 @@ jobs:
         run: |
           pip install requests
           sudo apt-get update && sudo apt-get install -y imagemagick potrace
-      - name: Fetch and process drawings
-        run: ./scripts/cli.py daily-drawing --commit
-      - name: Push changes
+      - name: Configure git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git push || echo "Nothing to push"
+      - name: Fetch and process drawings
+        run: ./scripts/cli.py daily-drawing --commit
+      - name: Push changes
+        run: git push || echo "Nothing to push"
 ```
 
 ### Error Handling
