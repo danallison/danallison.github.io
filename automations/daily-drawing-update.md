@@ -25,8 +25,8 @@ Uses the [Community Archive](https://github.com/TheExGenesis/community-archive) 
 
 1. **Scan local** - Find the most recent date in `drawings/` directory (parse `YYYY-MM-DD` from filenames)
 2. **Fetch** - Query Community Archive API for all matching tweets since that date
-3. **Filter** - Skip any tweets whose date already has an image in `drawings/`
-4. **Download** - For each new tweet, save image to `drawings/YYYY-MM-DD_1.jpg`
+3. **Filter** - Skip dates that already have images in `drawings/` (unless `--force`)
+4. **Download** - For each new tweet, save image to `drawings/YYYY-MM-DD_N.jpg` (N increments for multiple tweets on same day)
 5. **Generate metadata** - Run `./scripts/cli.py generate-metadata --source drawings/ --dest _drawings/ --layout drawing`
 6. **Add tweet URLs** - Update each generated `.md` file's frontmatter with `tweet: https://x.com/danallison/status/{tweet_id}`
 7. **Convert to SVG** - Run `./scripts/cli.py to-svg`

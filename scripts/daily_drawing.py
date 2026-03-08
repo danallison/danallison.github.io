@@ -50,21 +50,22 @@ def get_latest_local_date(drawings_dir: Path) -> datetime | None:
     return max(dates) if dates else None
 
 
-def get_local_dates(drawings_dir: Path) -> set[str]:
-    """Get set of all dates that already have images locally."""
+def get_local_date_counts(drawings_dir: Path) -> dict[str, int]:
+    """Get count of images for each date that exists locally."""
     date_pattern = re.compile(r'^(\d{4}-\d{2}-\d{2})_')
-    dates = set()
+    counts: dict[str, int] = {}
 
     if not drawings_dir.exists():
-        return dates
+        return counts
 
     for f in drawings_dir.iterdir():
         if f.is_file():
             m = date_pattern.match(f.name)
             if m:
-                dates.add(m.group(1))
+                date_str = m.group(1)
+                counts[date_str] = counts.get(date_str, 0) + 1
 
-    return dates
+    return counts
 
 
 def supabase_headers():
@@ -177,12 +178,17 @@ def run_pipeline():
         print("Warning: SVG conversion failed (imagemagick/potrace may not be installed)")
 
 
-def git_commit(dates: list[str]):
+def git_commit(pagenames: list[str]):
     """Commit changes with descriptive message."""
-    if len(dates) == 1:
-        msg = f"Add drawing {dates[0]}"
+    if len(pagenames) == 1:
+        msg = f"Add drawing {pagenames[0]}"
     else:
-        msg = f"Add {len(dates)} drawings ({min(dates)} to {max(dates)})"
+        # Extract dates for range display
+        dates = sorted(set(p.rsplit("_", 1)[0] for p in pagenames))
+        if len(dates) == 1:
+            msg = f"Add {len(pagenames)} drawings ({dates[0]})"
+        else:
+            msg = f"Add {len(pagenames)} drawings ({dates[0]} to {dates[-1]})"
 
     subprocess.run(["git", "add", str(DRAWINGS_DIR), str(METADATA_DIR), "svgs/"], check=True)
     subprocess.run(["git", "commit", "-m", msg], check=True)
@@ -205,8 +211,9 @@ def daily_drawing(since: str | None = None, force: bool = False, commit: bool = 
 
     print(f"Looking for tweets since {start_date.strftime('%Y-%m-%d')}...")
 
-    # Get existing dates to skip
-    existing_dates = get_local_dates(DRAWINGS_DIR) if not force else set()
+    # Get existing date counts (how many images per date)
+    date_counts = get_local_date_counts(DRAWINGS_DIR) if not force else {}
+    existing_dates = set(date_counts.keys())  # Snapshot of dates to skip
 
     # Fetch tweets with media
     tweets = fetch_goodnight_tweets(start_date)
@@ -215,11 +222,11 @@ def daily_drawing(since: str | None = None, force: bool = False, commit: bool = 
         print(f"No new drawings since {start_date.strftime('%Y-%m-%d')}")
         return
 
-    # Process each tweet
-    downloaded_dates = []
-    tweet_info = {}  # date -> tweet_id mapping
+    # Process each tweet (oldest first so suffixes are chronological)
+    downloaded_files = []
+    tweet_info = {}  # pagename -> tweet_id mapping
 
-    for tweet in tweets:
+    for tweet in reversed(tweets):
         # Parse tweet date
         created_at = tweet.get("created_at", "")
         try:
@@ -228,26 +235,30 @@ def daily_drawing(since: str | None = None, force: bool = False, commit: bool = 
         except (ValueError, AttributeError):
             continue
 
+        # Skip dates that already have images locally (unless --force)
         if date_str in existing_dates:
             print(f"Skipping {date_str} (already exists)")
             continue
 
-        # Download image
-        filename = f"{date_str}_1.jpg"
+        # Determine next available suffix for this date (handles multiple tweets same day)
+        current_count = date_counts.get(date_str, 0)
+        suffix = current_count + 1
+        pagename = f"{date_str}_{suffix}"
+        filename = f"{pagename}.jpg"
         dest_path = DRAWINGS_DIR / filename
 
         print(f"Downloading {filename}...")
         download_image(tweet["image_url"], dest_path)
 
-        downloaded_dates.append(date_str)
-        tweet_info[date_str] = tweet["id"]
-        existing_dates.add(date_str)  # Prevent duplicates within same run
+        downloaded_files.append(pagename)
+        tweet_info[pagename] = tweet["id"]
+        date_counts[date_str] = suffix  # Track for next image on same date
 
-    if not downloaded_dates:
+    if not downloaded_files:
         print("No new drawings to download")
         return
 
-    print(f"Downloaded {len(downloaded_dates)} new drawings")
+    print(f"Downloaded {len(downloaded_files)} new drawings")
 
     # Run pipeline
     print("Generating metadata...")
@@ -255,8 +266,8 @@ def daily_drawing(since: str | None = None, force: bool = False, commit: bool = 
 
     # Update frontmatter with tweet URLs
     print("Adding tweet URLs to metadata...")
-    for date_str, tweet_id in tweet_info.items():
-        md_path = METADATA_DIR / f"{date_str}_1.md"
+    for pagename, tweet_id in tweet_info.items():
+        md_path = METADATA_DIR / f"{pagename}.md"
         if md_path.exists():
             tweet_url = f"https://x.com/danallison/status/{tweet_id}"
             update_frontmatter_with_tweet(md_path, tweet_url)
@@ -265,7 +276,7 @@ def daily_drawing(since: str | None = None, force: bool = False, commit: bool = 
     # Commit if requested
     if commit:
         print("Committing changes...")
-        git_commit(downloaded_dates)
+        git_commit(downloaded_files)
 
     print("Done!")
 
