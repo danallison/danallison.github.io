@@ -3,5 +3,6 @@ layout: drawing
 filename: 2025-02-13_guy-dotted-circle.jpg
 pagename: 2025-02-13_guy-dotted-circle
 date: 2025-02-13
+tweet: https://x.com/danallison/status/1890254185897357781
 tags:
 ---

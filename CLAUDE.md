@@ -2,6 +2,14 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Python Environment
+
+Python scripts require the project-local virtual environment (`.venv/`). Activate it before running scripts:
+```bash
+source .venv/bin/activate
+./scripts/cli.py <command>
+```
+
 ## Build Commands
 
 ```bash

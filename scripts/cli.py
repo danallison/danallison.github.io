@@ -117,6 +117,12 @@ def cmd_daily_drawing(args):
     daily_drawing(since=args.since, force=args.force, commit=args.commit)
 
 
+def cmd_backfill_tweets(args):
+    """Backfill tweet URLs for drawing pages."""
+    from backfill_tweets import backfill_tweets
+    backfill_tweets(dry_run=args.dry_run)
+
+
 def main():
     parser = argparse.ArgumentParser(
         description='Jekyll site automation CLI',
@@ -170,6 +176,11 @@ def main():
     p_daily.add_argument('--force', action='store_true', help='Re-download even if date exists locally')
     p_daily.add_argument('--commit', action='store_true', help='Commit changes after processing')
     p_daily.set_defaults(func=cmd_daily_drawing)
+
+    # backfill-tweets
+    p_backfill = subparsers.add_parser('backfill-tweets', help='Backfill tweet URLs for drawing pages')
+    p_backfill.add_argument('--dry-run', action='store_true', help='Show what would be done without making changes')
+    p_backfill.set_defaults(func=cmd_backfill_tweets)
 
     args = parser.parse_args()
     args.func(args)
