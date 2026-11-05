@@ -1,0 +1,306 @@
+---
+layout: default
+title: Drawings (drag-n-drop)
+permalink: /drawings/drag-n-drop/
+search_exclude: true
+---
+<style>
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+  }
+  .gallery .tile {
+    position: relative;
+    cursor: grab;
+  }
+  .gallery .tile.filtered,
+  .gallery.hide-removed .tile.removed {
+    display: none;
+  }
+  .gallery .tile.removed img {
+    opacity: 0.25;
+  }
+  .gallery img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    pointer-events: none;
+  }
+  .gallery .position {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 3.5em;
+    font-size: 0.7em;
+    background: rgba(255,255,255,0.85);
+    border: 1px solid #ccc;
+  }
+  .gallery .tile.removed .position {
+    display: none;
+  }
+  .gallery .toggle {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    padding: 0 5px;
+    font-size: 0.7em;
+    line-height: 1.5;
+    cursor: pointer;
+    background: rgba(255,255,255,0.85);
+    border: 1px solid #ccc;
+  }
+  .gallery .sortable-ghost {
+    opacity: 0.3;
+  }
+  .controls {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    padding: 8px 0;
+    background: #fff;
+    font-size: 0.9em;
+  }
+  .controls > div {
+    margin: 4px 0;
+  }
+</style>
+
+<h1>Drawings (drag-n-drop)</h1>
+<p>
+  Drag drawings to reorder them, or type a number in a drawing's position box to move it there.
+  Use × to remove a drawing from the set. Everything is saved in this browser's local storage.
+</p>
+
+<div class="controls">
+  <div>
+    <label>From <input type="date" id="from"></label>
+    <label>To <input type="date" id="to"></label>
+    <label><input type="checkbox" id="show-removed"> Show removed</label>
+    <span id="count"></span>
+  </div>
+  <div>
+    <button id="export">Export</button>
+    <button id="import">Import</button>
+    <button id="reset">Reset to date order</button>
+    <span id="status"></span>
+  </div>
+</div>
+
+{% assign drawings = site.drawings | sort: 'date' %}
+<div class="gallery hide-removed" id="gallery">
+{% for drawing in drawings %}
+  {% assign file_extension = drawing.filename | split: '.' | last %}
+  <div class="tile" data-id="{{ drawing['pagename'] }}" data-date="{{ drawing.date | date: '%Y-%m-%d' }}" title="{{ drawing['pagename'] }}">
+    <input class="position" type="number" min="1">
+    <button class="toggle" type="button" title="Remove from set">×</button>
+    {% if file_extension == "gif" %}
+      <img src="/drawings/{{ drawing['filename'] }}" alt="{{ drawing['pagename'] }}" loading="lazy"/>
+    {% else %}
+      <img src="/svgs/{{ drawing['pagename'] }}.svg" alt="{{ drawing['pagename'] }}" loading="lazy"/>
+    {% endif %}
+  </div>
+{% endfor %}
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"></script>
+<script>
+  const ORDER_KEY = 'drawings-drag-n-drop-order';
+  const REMOVED_KEY = 'drawings-drag-n-drop-removed';
+  const FILTERS_KEY = 'drawings-drag-n-drop-filters';
+  const DEFAULT_FILTERS = { from: '2025-11-01', to: '', showRemoved: false };
+
+  const gallery = document.getElementById('gallery');
+  const status = document.getElementById('status');
+  const fromInput = document.getElementById('from');
+  const toInput = document.getElementById('to');
+  const showRemovedInput = document.getElementById('show-removed');
+  const tiles = Array.from(gallery.querySelectorAll('.tile'));
+
+  function load(key, fallback) {
+    try {
+      return JSON.parse(localStorage.getItem(key)) || fallback;
+    } catch (e) {
+      return fallback;
+    }
+  }
+
+  function store(key, value) {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+      return true;
+    } catch (e) {
+      status.textContent = 'Could not save to local storage.';
+      return false;
+    }
+  }
+
+  function removedIds() {
+    return tiles.filter(tile => tile.classList.contains('removed')).map(tile => tile.dataset.id);
+  }
+
+  function save() {
+    if (store(ORDER_KEY, sortable.toArray()) && store(REMOVED_KEY, removedIds())) {
+      status.textContent = 'Saved.';
+    }
+  }
+
+  // Drawings that are in the set: inside the date range and not removed, in current order.
+  function setTiles() {
+    return Array.from(gallery.querySelectorAll('.tile:not(.filtered):not(.removed)'));
+  }
+
+  function refresh() {
+    const inSet = setTiles();
+    inSet.forEach((tile, i) => {
+      tile.querySelector('.position').value = i + 1;
+    });
+    const removedInRange = gallery.querySelectorAll('.tile.removed:not(.filtered)').length;
+    document.getElementById('count').textContent =
+      `${inSet.length} drawings in set (${removedInRange} removed)`;
+  }
+
+  function applyFilters() {
+    const from = fromInput.value;
+    const to = toInput.value;
+    tiles.forEach(tile => {
+      const date = tile.dataset.date;
+      tile.classList.toggle('filtered', (from && date < from) || (to && date > to));
+    });
+    gallery.classList.toggle('hide-removed', !showRemovedInput.checked);
+    store(FILTERS_KEY, { from, to, showRemoved: showRemovedInput.checked });
+    refresh();
+  }
+
+  function setRemoved(tile, removed) {
+    tile.classList.toggle('removed', removed);
+    const toggle = tile.querySelector('.toggle');
+    toggle.textContent = removed ? '+' : '×';
+    toggle.title = removed ? 'Restore to set' : 'Remove from set';
+  }
+
+  // Apply a saved order. Drawings not in the saved order (e.g. newly added)
+  // keep their date order and go at the end.
+  function applyOrder(order) {
+    const known = new Set(sortable.toArray());
+    const ordered = order.filter(id => known.has(id));
+    const placed = new Set(ordered);
+    const rest = sortable.toArray().filter(id => !placed.has(id));
+    sortable.sort(ordered.concat(rest));
+  }
+
+  function applyRemoved(ids) {
+    const removed = new Set(ids);
+    tiles.forEach(tile => setRemoved(tile, removed.has(tile.dataset.id)));
+  }
+
+  // Move a tile to a 1-based position among the drawings in the set.
+  function moveToPosition(tile, position) {
+    const inSet = setTiles();
+    const target = inSet[Math.min(Math.max(position, 1), inSet.length) - 1];
+    if (!target || target === tile) return;
+    const movingDown = inSet.indexOf(tile) < inSet.indexOf(target);
+    target.insertAdjacentElement(movingDown ? 'afterend' : 'beforebegin', tile);
+    save();
+    refresh();
+    tile.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  }
+
+  const sortable = Sortable.create(gallery, {
+    animation: 150,
+    scroll: true,
+    scrollSensitivity: 120,
+    scrollSpeed: 20,
+    filter: '.position, .toggle',
+    preventOnFilter: false,
+    onEnd: () => {
+      save();
+      refresh();
+    },
+  });
+
+  const dateOrder = sortable.toArray();
+  const filters = Object.assign({}, DEFAULT_FILTERS, load(FILTERS_KEY, {}));
+  fromInput.value = filters.from;
+  toInput.value = filters.to;
+  showRemovedInput.checked = filters.showRemoved;
+  applyOrder(load(ORDER_KEY, []));
+  applyRemoved(load(REMOVED_KEY, []));
+  applyFilters();
+
+  [fromInput, toInput, showRemovedInput].forEach(input => input.addEventListener('change', applyFilters));
+
+  gallery.addEventListener('click', event => {
+    if (!event.target.classList.contains('toggle')) return;
+    const tile = event.target.closest('.tile');
+    setRemoved(tile, !tile.classList.contains('removed'));
+    save();
+    refresh();
+  });
+
+  gallery.addEventListener('change', event => {
+    if (!event.target.classList.contains('position')) return;
+    const tile = event.target.closest('.tile');
+    const position = parseInt(event.target.value, 10);
+    if (Number.isNaN(position)) {
+      refresh();
+    } else {
+      moveToPosition(tile, position);
+    }
+  });
+
+  gallery.addEventListener('keydown', event => {
+    if (event.key === 'Enter' && event.target.classList.contains('position')) {
+      event.target.blur();
+    }
+  });
+
+  // Export includes the book set (in order) plus everything needed to restore this page.
+  document.getElementById('export').addEventListener('click', () => {
+    const data = {
+      drawings: setTiles().map(tile => tile.dataset.id),
+      order: sortable.toArray(),
+      removed: removedIds(),
+      filters: { from: fromInput.value, to: toInput.value },
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'drawings-order.json';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+
+  document.getElementById('import').addEventListener('click', () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'application/json';
+    input.addEventListener('change', async () => {
+      try {
+        const data = JSON.parse(await input.files[0].text());
+        // Older exports were a plain array of ids.
+        applyOrder(Array.isArray(data) ? data : data.order || []);
+        if (!Array.isArray(data)) {
+          applyRemoved(data.removed || []);
+          if (data.filters) {
+            fromInput.value = data.filters.from || '';
+            toInput.value = data.filters.to || '';
+          }
+        }
+        save();
+        applyFilters();
+      } catch (e) {
+        status.textContent = 'Could not read that file.';
+      }
+    });
+    input.click();
+  });
+
+  document.getElementById('reset').addEventListener('click', () => {
+    if (!confirm('Reset to date order? Your custom order will be lost (removed drawings stay removed).')) return;
+    applyOrder(dateOrder);
+    save();
+    refresh();
+  });
+</script>
