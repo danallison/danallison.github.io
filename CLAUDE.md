@@ -141,6 +141,10 @@ python scripts/convert_to_png.py [--input svgs] [--output pngs-for-book] [option
 | `--input` | `svgs` | Input directory |
 | `--output` | `pngs-for-book` | Output directory |
 | `--dpi` | `300` | DPI resolution |
+| `--page-width` | `5.83` | Max printed width in inches (A5) |
+| `--page-height` | `8.27` | Max printed height in inches (A5) |
+
+Each SVG is rendered from vector (not upscaled) to fit within page-width × page-height at the given DPI, preserving aspect ratio (1749×2481 px max for A5 at 300 DPI). Specific files can be passed as positional args to `convert_to_png.py` (the `cli.py to-png` wrapper converts a whole directory).
 | `--overwrite` | `false` | Overwrite existing PNGs |
 | `--jobs` | CPU count | Parallel workers |
 

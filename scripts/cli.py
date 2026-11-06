@@ -100,10 +100,11 @@ def cmd_to_png(args):
         print("No SVGs found.")
         return
 
-    print(f"Converting {len(svgs)} SVGs to PNG at {args.dpi} DPI using {args.jobs} workers.")
+    print(f"Converting {len(svgs)} SVGs to PNG at {args.dpi} DPI, fit to {args.page_width}x{args.page_height} in, using {args.jobs} workers.")
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=args.jobs) as ex:
-        futures = {ex.submit(convert_one, svg, output_dir, args.dpi, args.overwrite): svg for svg in svgs}
+        futures = {ex.submit(convert_one, svg, output_dir, args.dpi, args.overwrite,
+                             args.page_width, args.page_height): svg for svg in svgs}
         for fut in concurrent.futures.as_completed(futures):
             try:
                 print(fut.result())
@@ -166,6 +167,8 @@ def main():
     p_png.add_argument('--input', default='svgs', help='Input directory (default: svgs)')
     p_png.add_argument('--output', default='pngs-for-book', help='Output directory (default: pngs-for-book)')
     p_png.add_argument('--dpi', type=int, default=300, help='DPI resolution (default: 300)')
+    p_png.add_argument('--page-width', type=float, default=5.83, help='Max printed width in inches (default: 5.83, A5)')
+    p_png.add_argument('--page-height', type=float, default=8.27, help='Max printed height in inches (default: 8.27, A5)')
     p_png.add_argument('--overwrite', action='store_true', help='Overwrite existing PNGs')
     p_png.add_argument('--jobs', type=int, default=os.cpu_count() or 4, help='Parallel jobs')
     p_png.set_defaults(func=cmd_to_png)
