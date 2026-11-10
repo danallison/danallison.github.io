@@ -1,0 +1,298 @@
+# You are loved. You are free. Volume 1
+# Build: ./scripts/cli.py build-book volume-1
+#
+# Text fields (copyright, preface) are Typst markup: _italic_, *bold*, and escape @ # as \@ \#.
+# Drawing widths reproduce the hand-sized Volume 1 layout (measured from the Google Docs PDF).
+
+title: You are loved. You are free.
+volume: 1
+author: Dan Allison
+trim: {width: 5.83, height: 8.27}  # inches (A5)
+
+copyright: |
+  Copyright © 2025 by Dan Allison, licensed under Creative Commons Attribution-NonCommercial 4.0 International. To view a copy of this license, visit https://creativecommons.org/licenses/by-nc/4.0/
+
+  https://danallison.info
+
+dedication: Dedicated to my dear sister Aubrey.
+
+preface: |
+  This book is a collection of drawings I made between November 2023 and November 2025.
+
+  Every night on Twitter, I post a new drawing with the words _“You are loved. You are free. Goodnight.”_ I started this nightly ritual with the encouragement of a very insistent dream character and have kept it going since. There have been a few gaps here and there, but mostly I’ve stuck to the nightly schedule.
+
+  This volume does not include all of the drawings I’ve shared through this nightly ritual. Just the highlights in chronological order. If you’d like to see the complete set of drawings, you can do so on my website https://danallison.info/drawings.
+
+  To see my new drawings, you can follow me on Twitter (\@danallison) and subscribe to my newsletter on Substack (https://danallison.substack.com).
+
+  I hope you enjoy this book.
+
+  Dan Allison \
+  Seattle, Washington \
+  November 2025
+
+end_mark: {path: books/shared/end-mark.svg, width: 2.156}
+
+# Widths below are of the whole photo, as placed by hand in the original Google Doc.
+sizing: {crop: false}
+
+drawings:
+  - {id: 2023-11-22_triangle-faces, width: 2.531}
+  - {id: 2023-12-02_wizard-cat-portal-hat, width: 4.26}
+  - {id: 2024-01-26_dualish, width: 3.75}
+  - {id: 2024-02-04_teamwork, width: 3.708}
+  - {id: 2024-02-15_horizon, width: 4.219}
+  - {id: 2024-02-17_planets, width: 3.74}
+  - {id: 2024-02-19_mind-body, width: 3.927}
+  - {id: 2024-03-20_coffee-overhead, width: 3.823}
+  - {id: 2024-04-08_double-vision, width: 3.115}
+  - {id: 2024-04-11_box-cats, width: 3.823}
+  - {id: 2024-04-17_toil, width: 3.865}
+  - {id: 2024-04-24_summon-the-squiggle, width: 3.781}
+  - {id: 2024-04-30_mind-network, width: 3.531}
+  - {id: 2024-05-01_row-boat, width: 4.354}
+  - {id: 2024-05-05_mutual-headstand, width: 3.74}
+  - {id: 2024-05-06_lightning-strike, width: 3.802}
+  - {id: 2024-05-07_campfire, width: 3.823}
+  - {id: 2024-05-08_puddle-face, width: 3.823}
+  - {id: 2024-05-09_stereo-cyclops, width: 3.333}
+  - {id: 2024-05-13_windows, width: 3.729}
+  - {id: 2024-05-14_recursive-quadrant, width: 3.406}
+  - {id: 2024-05-15_belly, width: 4.094}
+  - {id: 2024-05-17_kiki-bouba-bouba-kiki, width: 4.198}
+  - {id: 2024-05-18_squiggle, width: 3.74}
+  - {id: 2024-05-19_light-guards, width: 3.01}
+  - {id: 2024-05-20_visit, width: 4.406}
+  - {id: 2024-05-23_between-portals, width: 3.271}
+  - {id: 2024-05-24_loop-a-gram, width: 3.823}
+  - {id: 2024-05-30_biblically-accurate-balloon, width: 3.573}
+  - {id: 2024-06-01_window-washer, width: 3.312}
+  - {id: 2024-06-08_haunting-words, width: 3.448}
+  - {id: 2024-06-10_octogram, width: 3.823}
+  - {id: 2024-06-11_package-delivery, width: 4.188}
+  - {id: 2024-06-14_poolside, width: 3.406}
+  - {id: 2024-06-18_cage, width: 3.354}
+  - {id: 2024-06-21_time-perspective, width: 3.823}
+  - {id: 2024-06-25_double-door-faces, width: 2.635}
+  - {id: 2024-06-27_landing-pad, width: 4.167}
+  - {id: 2024-07-04_extrapolating, width: 2.781}
+  - {id: 2024-07-07_stretch, width: 3.156}
+  - {id: 2024-07-08_missing-links, width: 3.26}
+  - {id: 2024-07-09_two-face, width: 4.052}
+  - {id: 2024-07-11_waveform-reveal, width: 3.823}
+  - {id: 2024-07-13_healing-triangle, width: 3.823}
+  - {id: 2024-07-22_cyclops, width: 3.271}
+  - {id: 2024-07-23_rings, width: 3.427}
+  - {id: 2024-07-24_wrap-around, width: 3.823}
+  - {id: 2024-07-28_drawing-triangle, width: 3.521}
+  - {id: 2024-07-29_wave-merge, width: 4.844}
+  - {id: 2024-08-03_interface, width: 3.073}
+  - {id: 2024-08-06_wavy-little-guys, width: 4.302}
+  - {id: 2024-08-08_cat-octogram, width: 3.375}
+  - {id: 2024-08-09_sweepers, width: 3.813}
+  - {id: 2024-08-10_arm, width: 3.823}
+  - {id: 2024-08-12_ocean-globe, width: 3.823}
+  - {id: 2024-08-16_yin-yang, width: 3.313}
+  - {id: 2024-08-18_touch-prism, width: 3.823}
+  - {id: 2024-08-19_lightbulb, width: 3.385}
+  - {id: 2024-08-21_flower, width: 4.177}
+  - {id: 2024-08-26_tree-angle, width: 3.823}
+  - {id: 2024-09-01_onion-eyes, width: 3.302}
+  - {id: 2024-09-04_eyeball-horse, width: 3.823}
+  - {id: 2024-09-05_double-door, width: 3.427}
+  - {id: 2024-09-06_hole-hill, width: 3.823}
+  - {id: 2024-09-11_tight-rope, width: 3.823}
+  - {id: 2024-09-12_peeps, width: 3.823}
+  - {id: 2024-09-14_jam, width: 3.823}
+  - {id: 2024-09-15_honeycomb, width: 3.146}
+  - {id: 2024-09-18_coral-portal, width: 3.042}
+  - {id: 2024-09-19_big-face-team, width: 3.094}
+  - {id: 2024-09-20_strange-loop-conversation, width: 3.823}
+  - {id: 2024-09-24_legs, width: 2.125}
+  - {id: 2024-09-25_directions, width: 3.823}
+  - {id: 2024-09-28_circle-dot-head-loop, width: 3.156}
+  - {id: 2024-09-30_binoculars, width: 3.021}
+  - {id: 2024-10-02_slinky-man, width: 2.927}
+  - {id: 2024-10-05_frog, width: 1.969}
+  - {id: 2024-10-08_eye-to-eye, width: 2.958}
+  - {id: 2024-10-09_head-diamond-grid, width: 3.375}
+  - {id: 2024-10-10_infinity-eye-head-loop, width: 2.917}
+  - {id: 2024-10-12_penrose, width: 2.667}
+  - {id: 2024-10-12_pringles, width: 3.25}
+  - {id: 2024-10-14_stretch-couple, width: 3.823}
+  - {id: 2024-10-15_big-body, width: 3.094}
+  - {id: 2024-10-16_stairs, width: 3.135}
+  - {id: 2024-10-19_squares-circles, width: 3.208}
+  - {id: 2024-10-21_upward-spiral, width: 3.823}
+  - {id: 2024-10-22_hearts, width: 2.365}
+  - {id: 2024-10-23_thinking-tree, width: 3.823}
+  - {id: 2024-10-27_roots, width: 3.115}
+  - {id: 2024-10-29_three-circles, width: 2.083}
+  - {id: 2024-10-30_frame-extension, width: 3.135}
+  - {id: 2024-11-01_triangle-dimensions, width: 2.667}
+  - {id: 2024-11-03_house-head, width: 3.281}
+  - {id: 2024-11-04_walking-autoencoder, width: 3.823}
+  - {id: 2024-11-05_triple-venn, width: 2.604}
+  - {id: 2024-11-07_waxing-waning, width: 3.135}
+  - {id: 2024-11-08_empty-bench, width: 3.313}
+  - {id: 2024-11-09_triple-stretch, width: 2.833}
+  - {id: 2024-11-13_yarn, width: 3.437}
+  - {id: 2025-01-14_sum-of-parts, width: 4.448}
+  - {id: 2025-01-16_fishing-moonlight, width: 4.333}
+  - {id: 2025-01-22_perspective-cube, width: 2.021}
+  - {id: 2025-01-25_hand-ripples, width: 3.417}
+  - {id: 2025-02-05_dodeca-friends, width: 3.49}
+  - {id: 2025-02-07_icosofaces, width: 1.833}
+  - {id: 2025-02-08_love-hand, width: 3.458}
+  - {id: 2025-02-09_little-head-big-head, width: 3.021}
+  - {id: 2025-02-10_orbs-and-face, width: 2.844}
+  - {id: 2025-02-11_drawing-hand, width: 3.354}
+  - {id: 2025-02-12_feet-eyes-cycles, width: 3.167}
+  - {id: 2025-02-16_paper-airplane-bootstrap, width: 2.271}
+  - {id: 2025-02-18_pool-face, width: 3.146}
+  - {id: 2025-02-19_four-doors, width: 2.74}
+  - {id: 2025-02-20_stump, width: 3.823}
+  - {id: 2025-02-21_twin-peaks, width: 3.354}
+  - {id: 2025-02-24_holes, width: 2.75}
+  - {id: 2025-03-06_expanding-eyes, width: 2.094}
+  - {id: 2025-03-08_look-above-below, width: 3.823}
+  - {id: 2025-03-09_collective-body, width: 3.063}
+  - {id: 2025-03-10_rotating-hex-cubes, width: 2.833}
+  - {id: 2025-03-14_wavy-inflateable-dudes, width: 4.427}
+  - {id: 2025-03-16_hands-ground-globe-sky, width: 3.823}
+  - {id: 2025-03-18_fractal-pentagram, width: 2.188}
+  - {id: 2025-03-21_chairface, width: 3.052}
+  - {id: 2025-03-22_domino-doors, width: 1.823}
+  - {id: 2025-03-29_inner-loops-flower, width: 2.885}
+  - {id: 2025-03-30_infinity-track, width: 2.177}
+  - {id: 2025-04-01_child-and-tall-person, width: 3.26}
+  - {id: 2025-04-03_vibing, width: 2.604}
+  - {id: 2025-04-06_seeing-connection, width: 2.896}
+  - {id: 2025-04-08_passage, width: 2.458}
+  - {id: 2025-04-09_prediction-error, width: 3.948}
+  - {id: 2025-04-12_occlusion, width: 2.833}
+  - {id: 2025-04-14_tree-on-a-boat, width: 3.823}
+  - {id: 2025-04-16_rearranging, width: 2.865}
+  - {id: 2025-04-20_door, width: 4.479}
+  - {id: 2025-04-21_step, width: 3.823}
+  - {id: 2025-04-22_slide, width: 3.01}
+  - {id: 2025-04-23_doors, width: 4.438}
+  - {id: 2025-04-24_free-of-attachment, width: 3.0}
+  - {id: 2025-04-27_ribs, width: 3.135}
+  - {id: 2025-04-28_wheels, width: 2.885}
+  - {id: 2025-05-01_middle-pillar, width: 2.448}
+  - {id: 2025-05-04_vertical-lines, width: 2.208}
+  - {id: 2025-05-06_five-bubbles, width: 2.875}
+  - {id: 2025-05-07_wall-of-focus, width: 2.656}
+  - {id: 2025-05-08_triangle-drift, width: 3.0}
+  - {id: 2025-05-10_family, width: 2.323}
+  - {id: 2025-05-11_arch, width: 4.375}
+  - {id: 2025-05-14_three-doors, width: 4.063}
+  - {id: 2025-05-16_loopy-faces, width: 2.896}
+  - {id: 2025-05-18_thought-network, width: 3.271}
+  - {id: 2025-05-19_teamwork-balls, width: 2.865}
+  - {id: 2025-05-23_wizard-cat-hand, width: 3.823}
+  - {id: 2025-05-26_reach, width: 3.823}
+  - {id: 2025-05-30_portal-headstand, width: 2.365}
+  - {id: 2025-06-02_bird-fish, width: 3.823}
+  - {id: 2025-06-03_bowtie-to-figure-8, width: 3.823}
+  - {id: 2025-06-06_flow, width: 1.573}
+  - {id: 2025-06-13_derby-car, width: 4.292}
+  - {id: 2025-06-14_parent-and-child, width: 2.521}
+  - {id: 2025-06-15_wave-filters, width: 4.219}
+  - {id: 2025-06-18_third-eye, width: 3.052}
+  - {id: 2025-06-21_frayed-seams, width: 2.49}
+  - {id: 2025-06-22_infinity-worm, width: 2.979}
+  - {id: 2025-06-23_cycle, width: 2.542}
+  - {id: 2025-06-24_flight, width: 3.823}
+  - {id: 2025-06-25_open, width: 2.542}
+  - {id: 2025-06-30_relative-sizes, width: 3.823}
+  - {id: 2025-07-01_overlap, width: 3.229}
+  - {id: 2025-07-04_squiggle-observer, width: 3.823}
+  - {id: 2025-07-05_behind-our-eyes, width: 3.0}
+  - {id: 2025-07-06_slinky-faces, width: 3.354}
+  - {id: 2025-07-07_door-face, width: 2.5}
+  - {id: 2025-07-08_time-knife, width: 3.344}
+  - {id: 2025-07-10_four-loop, width: 1.677}
+  - {id: 2025-07-11_snail-loop, width: 3.823}
+  - {id: 2025-07-12_butterfly, width: 3.823}
+  - {id: 2025-07-13_hole-clouds, width: 3.823}
+  - {id: 2025-07-14_drop-box, width: 2.979}
+  - {id: 2025-07-15_octo-fragments, width: 3.823}
+  - {id: 2025-07-17_three-scopes, width: 4.667}
+  - {id: 2025-07-19_hand, width: 3.479}
+  - {id: 2025-07-20_twenty-perspectives, width: 2.51}
+  - {id: 2025-07-22_angels, width: 1.917}
+  - {id: 2025-07-23_coffee-cups, width: 4.125}
+  - {id: 2025-07-24_projection, width: 3.823}
+  - {id: 2025-07-25_rings, width: 3.823}
+  - {id: 2025-07-26_doors, width: 3.344}
+  - {id: 2025-07-27_tuning-in-hand-drawn, width: 3.552}
+  - {id: 2025-07-28_wizard-cat-hypercube, width: 2.729}
+  - {id: 2025-07-31_key, width: 3.427}
+  - {id: 2025-08-01_vibe-shift, width: 4.219}
+  - {id: 2025-08-04_short-and-tall-doors, width: 3.062}
+  - {id: 2025-08-05_doors, width: 2.615}
+  - {id: 2025-08-07_rainclouds, width: 3.552}
+  - {id: 2025-08-08_pentagramplifier, width: 1.927}
+  - {id: 2025-08-09_cups, width: 2.99}
+  - {id: 2025-08-11_staircase, width: 3.823}
+  - {id: 2025-08-14_grid, width: 2.448}
+  - {id: 2025-08-15_venn-diagram, width: 2.635}
+  - {id: 2025-08-19_four-corners, width: 3.448}
+  - {id: 2025-08-22_split-wave, width: 3.823}
+  - {id: 2025-08-23_grid-spiral-suspension, width: 3.208}
+  - {id: 2025-08-24_swirly-observation, width: 3.0}
+  - {id: 2025-08-25_head-ripples, width: 2.062}
+  - {id: 2025-08-26_snake, width: 2.833}
+  - {id: 2025-08-27_cans-and-string, width: 4.49}
+  - {id: 2025-08-29_boat-and-monolith, width: 4.594}
+  - {id: 2025-08-30_circle, width: 1.875}
+  - {id: 2025-08-31_clump, width: 3.615}
+  - {id: 2025-09-01_parts, width: 3.823}
+  - {id: 2025-09-02_box, width: 3.823}
+  - {id: 2025-09-04_rooted, width: 3.823}
+  - {id: 2025-09-05_ladder, width: 2.688}
+  - {id: 2025-09-08_angelic-wobble, width: 5.094}
+  - {id: 2025-09-10_square-warp, width: 3.823}
+  - {id: 2025-09-12_night-sky-cascades, width: 3.823}
+  - {id: 2025-09-13_squares-and-circles, width: 4.031}
+  - {id: 2025-09-14_lava-lamp-social-context, width: 3.823}
+  - {id: 2025-09-15_scribble-faces, width: 2.833}
+  - {id: 2025-09-18_tree-nap, width: 2.24}
+  - {id: 2025-09-19_hexagobox, width: 2.406}
+  - {id: 2025-09-20_pupil, width: 3.823}
+  - {id: 2025-09-22_chair-too-tall, width: 3.156}
+  - {id: 2025-09-23_middle-quadrant, width: 2.375}
+  - {id: 2025-09-24_booba-star, width: 1.583}
+  - {id: 2025-09-25_tree-time, width: 3.823}
+  - {id: 2025-09-26_screech, width: 4.177}
+  - {id: 2025-09-29_hour-glass-bowl-funnels, width: 3.823}
+  - {id: 2025-09-30_cube, width: 2.344}
+  - {id: 2025-10-02_almost-there, width: 2.552}
+  - {id: 2025-10-03_trap-door, width: 3.823}
+  - {id: 2025-10-04_wave-eyes, width: 4.969}
+  - {id: 2025-10-05_picasso, width: 3.823}
+  - {id: 2025-10-06_open-and-close, width: 4.76}
+  - {id: 2025-10-07_scribble-friends, width: 3.823}
+  - {id: 2025-10-10_door-to-door, width: 3.208}
+  - {id: 2025-10-12_between, width: 2.26}
+  - {id: 2025-10-13_wave-types, width: 2.531}
+  - {id: 2025-10-15_honeycomb, width: 3.823}
+  - {id: 2025-10-20_double-figure-8, width: 4.365}
+  - {id: 2025-10-23_trees, width: 4.708}
+  - {id: 2025-10-24_ribs, width: 3.479}
+  - {id: 2025-10-25_planting, width: 4.0}
+  - {id: 2025-10-27_innie-outtie, width: 2.521}
+  - {id: 2025-10-28_grated, width: 3.344}
+  - {id: 2025-10-29_small-big-big-small, width: 4.26}
+  - {id: 2025-10-31_4d-pizza-house, width: 3.823}
+  - {id: 2025-11-01_converging, width: 3.823}
+  - {id: 2025-11-02_close-up, width: 4.135}
+  - {id: 2025-11-04_this-is-fine, width: 4.365}
+  - {id: 2025-11-06_seated, width: 4.156}
+  - {id: 2025-11-08_field-lines, width: 4.917}
+  - {id: 2025-11-09_eyes, width: 3.823}
+  - {id: 2025-11-10_timeout, width: 3.313}
+  - {id: 2025-11-11_aurora-spotting, width: 3.823}
+  - {id: 2025-11-12_frequencies, width: 4.469}

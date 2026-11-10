@@ -148,6 +148,19 @@ Each SVG is rendered from vector (not upscaled) to fit within page-width × page
 | `--overwrite` | `false` | Overwrite existing PNGs |
 | `--jobs` | CPU count | Parallel workers |
 
+**build_book.py** - Build a book interior PDF from `books/NAME/book.yml` (requires: `pip install typst pyyaml` in `.venv`, and ImageMagick)
+```bash
+./scripts/cli.py build-book volume-2              # → book-files/volume-2/interior.pdf
+./scripts/cli.py build-book volume-1 --bleed 0.125  # → book-files/volume-1/interior-bleed.pdf
+```
+Layout lives in `books/shared/interior.typ` (Typst; matches the Volume 1 Google Docs layout). Fonts are bundled in `books/shared/fonts/`. Drawings are placed as vector SVGs from `svgs/`, sized and centered by their ink bounds (measured with ImageMagick, cached in `book-files/.ink-bounds.json`; the first build takes ~30s). The publishing plan and launch checklist are in `books/PLAN.md` (local only; gitignored).
+
+**layout_editor.py** - Adjust drawing sizes and positions in the browser
+```bash
+./scripts/cli.py layout-editor volume-2   # serves http://127.0.0.1:8765/ and opens it
+```
+Shows the book as spreads, placed exactly as in the PDF (editor page: `books/shared/layout-editor.html`). Drag to move, scroll to resize; Save writes `scale`/`dx`/`dy` into `book.yml` (keeping its comments), and Build PDF rebuilds the interior.
+
 ### Layout Hierarchy
 
 - `default.html` - Base wrapper with OG/Twitter meta tags

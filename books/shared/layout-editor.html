@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Layout editor</title>
+<!-- Served by scripts/layout_editor.py (./scripts/cli.py layout-editor NAME). Places drawings
+     with the same rules as books/shared/interior.typ; positions are in inches. -->
+<style>
+  @font-face { font-family: "Libre Baskerville"; src: url(/books/shared/fonts/LibreBaskerville-Regular.ttf); }
+  :root {
+    --bg: #2a2a2a; --panel: #1d1d1d; --line: #3a3a3a; --text: #e8e8e8; --muted: #9a9a9a;
+    --accent: #4da3ff; --changed: #ffb648; --error: #ff6b6b;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; height: 100vh; overflow: hidden; display: grid; grid-template-rows: auto 1fr;
+    background: var(--bg); color: var(--text); font: 13px/1.4 system-ui, sans-serif;
+  }
+  button, input { font: inherit; color: inherit; }
+  button {
+    background: #333; border: 1px solid #484848; border-radius: 4px; padding: 4px 10px; cursor: pointer;
+  }
+  button:hover:not(:disabled) { background: #3d3d3d; }
+  button:disabled { opacity: .45; cursor: default; }
+  button.primary { background: #1f5fa8; border-color: #2a72c4; }
+  input[type=number], input[type=text] {
+    background: #111; border: 1px solid #444; border-radius: 4px; padding: 3px 6px; width: 72px;
+  }
+  header {
+    display: flex; align-items: center; gap: 10px; padding: 8px 14px; background: var(--panel);
+    border-bottom: 1px solid var(--line); flex-wrap: wrap;
+  }
+  header h1 { font-size: 14px; margin: 0 8px 0 0; font-weight: 600; }
+  header .spacer { flex: 1; }
+  #status { color: var(--muted); min-width: 120px; text-align: right; }
+  #status.error { color: var(--error); }
+  label.toggle { display: flex; align-items: center; gap: 4px; color: var(--muted); cursor: pointer; }
+  main { display: grid; grid-template-columns: 1fr 270px; min-height: 0; }
+  #stage { display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 24px; }
+  #spread { display: flex; box-shadow: 0 4px 24px rgba(0,0,0,.5); }
+  .page { position: relative; background: #fff; overflow: hidden; flex: none; touch-action: none; }
+  .page + .page { border-left: 1px solid #ddd; }
+  .page img {
+    position: absolute; max-width: none; user-select: none; -webkit-user-drag: none; pointer-events: none;
+  }
+  .page svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+  #spread .page { cursor: grab; }
+  #spread .page.dragging { cursor: grabbing; }
+  #spread .page.blank { cursor: default; background: #f4f4f4; }
+  #spread .page.selected::after {
+    content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 3px var(--accent); pointer-events: none;
+  }
+  #overview {
+    display: none; overflow: auto; padding: 20px; gap: 18px 14px;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); align-content: start;
+  }
+  body.overview #overview { display: grid; }
+  body.overview #stage { display: none; }
+  .thumb { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; color: var(--muted); }
+  .thumb .pair { display: flex; outline: 2px solid transparent; }
+  .thumb:hover .pair { outline-color: var(--accent); }
+  .thumb .page.changed::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 3px var(--changed); }
+  #pdf-link { color: var(--accent); }
+  .thumb .page.blank { background: #444; }
+  aside { background: var(--panel); border-left: 1px solid var(--line); padding: 14px; overflow-y: auto; }
+  aside h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 18px 0 8px; }
+  aside h2:first-child { margin-top: 0; }
+  #sel-title { font-size: 15px; font-weight: 600; }
+  #sel-id { color: var(--muted); word-break: break-all; margin-bottom: 10px; }
+  .fields { display: grid; grid-template-columns: auto 1fr; gap: 6px 10px; align-items: center; }
+  .fields span.unit { color: var(--muted); margin-left: 4px; }
+  .buttons { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  #changes { display: flex; flex-wrap: wrap; gap: 4px; }
+  #changes button { padding: 1px 7px; border-color: var(--changed); color: var(--changed); background: none; }
+  dl.keys { display: grid; grid-template-columns: auto 1fr; gap: 3px 10px; margin: 0; color: var(--muted); }
+  dl.keys dt { color: var(--text); font-family: ui-monospace, monospace; font-size: 12px; }
+  dl.keys dd { margin: 0; }
+</style>
+</head>
+<body>
+<header>
+  <h1 id="book-title">Layout editor</h1>
+  <button id="prev" title="Previous spread ([)">‹</button>
+  <span>Pages <span id="spread-label"></span></span>
+  <button id="next" title="Next spread (])">›</button>
+  <input type="number" id="goto" min="1" placeholder="Go to" title="Go to page">
+  <button id="overview-btn" title="All pages (O)">Overview</button>
+  <label class="toggle"><input type="checkbox" id="guides" checked> Guides (G)</label>
+  <span class="spacer"></span>
+  <span id="status"></span>
+  <button id="save" class="primary" title="Save to book.yml (⌘S)">Save</button>
+  <button id="build" title="Save, then rebuild the PDF">Build PDF</button>
+  <a id="pdf-link" target="_blank" hidden>Open PDF ↗</a>
+</header>
+<main>
+  <div id="stage"><div id="spread"></div></div>
+  <div id="overview"></div>
+  <aside>
+    <h2>Selected</h2>
+    <div id="sel-title">—</div>
+    <div id="sel-id"></div>
+    <div class="fields">
+      <label for="f-scale">Scale</label><div><input type="number" id="f-scale" step="1"><span class="unit">%</span></div>
+      <label for="f-width">Width</label><div><input type="number" id="f-width" step="0.01"><span class="unit">in</span></div>
+      <label for="f-height">Height</label><div><input type="number" id="f-height" step="0.01"><span class="unit">in</span></div>
+      <label for="f-dx">Right</label><div><input type="number" id="f-dx" step="0.01"><span class="unit">in</span></div>
+      <label for="f-dy">Down</label><div><input type="number" id="f-dy" step="0.01"><span class="unit">in</span></div>
+    </div>
+    <div class="buttons">
+      <button data-action="center-x" title="C">Center ↔</button>
+      <button data-action="center-y" title="V">Center ↕</button>
+      <button data-action="reset-size" title="0">Default size</button>
+      <button data-action="reset" title="R">Reset all</button>
+    </div>
+    <h2>Unsaved pages</h2>
+    <div id="changes"><span style="color:var(--muted)">None</span></div>
+    <h2>Keys</h2>
+    <dl class="keys">
+      <dt>drag</dt><dd>move (Shift: one axis; Alt: no snapping)</dd>
+      <dt>scroll</dt><dd>resize</dd>
+      <dt>double-click</dt><dd>reset drawing</dd>
+      <dt>← ↑ → ↓</dt><dd>nudge 0.01" (Shift: 0.1")</dd>
+      <dt>+ −</dt><dd>resize 1% (Shift: 5%)</dd>
+      <dt>C V</dt><dd>center horizontally / vertically</dd>
+      <dt>0 R</dt><dd>default size / reset all</dd>
+      <dt>Tab</dt><dd>select other page</dd>
+      <dt>[ ]</dt><dd>previous / next spread</dd>
+      <dt>O G</dt><dd>overview / guides</dd>
+      <dt>⌘S ⌘Z ⇧⌘Z</dt><dd>save / undo / redo</dd>
+    </dl>
+  </aside>
+</main>
+<script>
+const $ = (s) => document.querySelector(s);
+const HEADER_Y = 0.631, NUMBER_Y = 7.704;  // baselines, as in interior.typ
+
+let book, drawings, trim, savedKeys = [];
+let left = 0;        // page number on the left of the spread (even; 0 = the preface page)
+let sel = 0;         // selected drawing index
+let ppi = 80;
+const undoStack = [], redoStack = [];
+let lastPush = { key: null, time: 0 };
+
+const key = (d) => `${d.width.toFixed(4)} ${d.dx.toFixed(3)} ${d.dy.toFixed(3)}`;
+const changed = (i) => key(drawings[i]) !== savedKeys[i];
+const dirtyCount = () => drawings.reduce((n, d, i) => n + changed(i), 0);
+const pageOf = (n) => n >= 1 && n <= drawings.length ? n - 1 : -1;  // page number → index
+
+async function load() {
+  const res = await fetch('/api/book');
+  setData(await res.json());
+  $('#book-title').textContent = `${book.title} — ${book.name}`;
+  document.title = `Layout — ${book.name}`;
+  goTo(parseInt(location.hash.slice(1)) || 1);
+}
+
+function setData(data) {
+  book = data; drawings = data.drawings; trim = data.trim;
+  savedKeys = drawings.map(key);
+}
+
+// Where the drawing's ink box and full image go on the page, in inches.
+function placement(d) {
+  const W = d.width, H = W / d.aspect, [cx, cy, cw, ch] = d.crop;
+  const fullW = W / cw, fullH = H / ch;
+  const inkL = (trim.width - W) / 2 + d.dx, inkT = (trim.height - H) / 2 + d.dy;
+  return { W, H, inkL, inkT, fullW, fullH, imgL: inkL - cx * fullW, imgT: inkT - cy * fullH };
+}
+
+function makePage(i, scale, opts = {}) {
+  const el = document.createElement('div');
+  el.className = 'page' + (i < 0 ? ' blank' : '');
+  el.style.width = trim.width * scale + 'px';
+  el.style.height = trim.height * scale + 'px';
+  el.dataset.index = i;
+  if (i >= 0) {
+    const img = document.createElement('img');
+    img.src = drawings[i].path;
+    img.alt = drawings[i].id;
+    if (opts.lazy) img.loading = 'lazy';
+    el.append(img);
+    el.insertAdjacentHTML('beforeend', `<svg viewBox="0 0 ${trim.width} ${trim.height}"></svg>`);
+    updatePage(el, scale, opts);
+  }
+  return el;
+}
+
+function updatePage(el, scale, opts = {}) {
+  const i = +el.dataset.index;
+  if (i < 0) return;
+  const d = drawings[i], p = placement(d), img = el.querySelector('img');
+  Object.assign(img.style, {
+    left: p.imgL * scale + 'px', top: p.imgT * scale + 'px',
+    width: p.fullW * scale + 'px', height: p.fullH * scale + 'px',
+  });
+  const guides = opts.guides ?? $('#guides').checked;
+  const { max_width: mw, max_height: mh } = book.sizing;
+  const cx = trim.width / 2, cy = trim.height / 2, thin = 1 / scale;
+  let svg = '';
+  if (!opts.thumb) {
+    const text = (y, s) => `<text x="${cx}" y="${y}" font-family="Libre Baskerville" font-size="${10 / 72}" text-anchor="middle">${s}</text>`;
+    svg += text(HEADER_Y, escapeHtml(book.title)) + text(NUMBER_Y, i + 1);
+  }
+  if (guides) {
+    const centered = (v) => Math.abs(v) < 0.0005;
+    const line = (on) => `stroke="${on ? '#00b36b' : '#e0457b'}" stroke-width="${thin}" stroke-dasharray="${4 * thin} ${3 * thin}"`;
+    svg += `<line x1="${cx}" y1="0" x2="${cx}" y2="${trim.height}" ${line(centered(d.dx))} opacity=".7"/>`;
+    svg += `<line x1="0" y1="${cy}" x2="${trim.width}" y2="${cy}" ${line(centered(d.dy))} opacity=".35"/>`;
+    svg += `<rect x="${cx - mw / 2}" y="${cy - mh / 2}" width="${mw}" height="${mh}" fill="none" stroke="#4da3ff" stroke-width="${thin}" opacity=".5"/>`;
+    svg += `<rect x="1" y="1" width="${trim.width - 2}" height="${trim.height - 2}" fill="none" stroke="#bbb" stroke-width="${thin}" stroke-dasharray="${2 * thin} ${4 * thin}"/>`;
+    if (!opts.thumb) svg += `<rect x="${p.inkL}" y="${p.inkT}" width="${p.W}" height="${p.H}" fill="none" stroke="#ff9a1f" stroke-width="${thin}" opacity=".8"/>`;
+  }
+  el.querySelector('svg').innerHTML = svg;
+  el.classList.toggle('changed', changed(i));
+}
+
+function escapeHtml(s) {
+  return s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+}
+
+// ---- Spread view ----
+
+function goTo(n) {
+  n = Math.max(1, Math.min(drawings.length, n));
+  left = n - (n % 2);
+  sel = pageOf(n);
+  history.replaceState(null, "", "#" + n);
+  render();
+}
+
+function render() {
+  const stage = $('#stage');
+  ppi = Math.max(20, Math.min((stage.clientWidth - 48) / (2 * trim.width), (stage.clientHeight - 48) / trim.height));
+  const spread = $('#spread');
+  spread.replaceChildren(makePage(pageOf(left), ppi), makePage(pageOf(left + 1), ppi));
+  const nums = [left, left + 1].filter((n) => pageOf(n) >= 0);
+  $('#spread-label').textContent = nums.join('–');
+  $('#prev').disabled = left <= 0;
+  $('#next').disabled = left + 2 > drawings.length;
+  refresh();
+}
+
+// Update the visible pages and panel after an edit, without reloading images.
+function refresh() {
+  for (const el of document.querySelectorAll('#spread .page')) {
+    updatePage(el, ppi);
+    el.classList.toggle('selected', +el.dataset.index === sel);
+  }
+  updatePanel();
+  const n = dirtyCount();
+  $('#save').disabled = n === 0;
+  $('#save').textContent = n ? `Save (${n})` : 'Save';
+}
+
+function updatePanel() {
+  const d = drawings[sel];
+  const active = document.activeElement;
+  const set = (id, v) => { if (active !== $(id)) $(id).value = v; };
+  $('#sel-title').textContent = d ? `Page ${sel + 1}` : '—';
+  $('#sel-id').textContent = d ? d.id : '';
+  if (d) {
+    set('#f-scale', +(100 * d.width / d.base_width).toFixed(1));
+    set('#f-width', d.width.toFixed(3));
+    set('#f-height', (d.width / d.aspect).toFixed(3));
+    set('#f-dx', d.dx.toFixed(3));
+    set('#f-dy', d.dy.toFixed(3));
+  }
+  const pages = drawings.map((_, i) => i).filter(changed);
+  $('#changes').replaceChildren(...(pages.length ? pages.map((i) => {
+    const b = document.createElement('button');
+    b.textContent = i + 1;
+    b.onclick = () => goTo(i + 1);
+    return b;
+  }) : [Object.assign(document.createElement('span'), { textContent: 'None', style: 'color:var(--muted)' })]));
+}
+
+// ---- Editing ----
+
+function pushHistory(i, coalesce) {
+  const now = Date.now();
+  if (coalesce && lastPush.key === coalesce + i && now - lastPush.time < 600) {
+    lastPush.time = now;
+    return;
+  }
+  const d = drawings[i];
+  undoStack.push({ i, width: d.width, dx: d.dx, dy: d.dy });
+  redoStack.length = 0;
+  lastPush = { key: coalesce ? coalesce + i : null, time: now };
+}
+
+function restore(from, to) {
+  const s = from.pop();
+  if (!s) return;
+  const d = drawings[s.i];
+  to.push({ i: s.i, width: d.width, dx: d.dx, dy: d.dy });
+  Object.assign(d, { width: s.width, dx: s.dx, dy: s.dy });
+  lastPush = { key: null, time: 0 };
+  if (pageOf(left) !== s.i && pageOf(left + 1) !== s.i) goTo(s.i + 1);
+  else { sel = s.i; refresh(); }
+}
+
+function edit(changes, coalesce) {
+  const d = drawings[sel];
+  if (!d) return;
+  pushHistory(sel, coalesce);
+  if (changes.width !== undefined) changes.width = Math.max(0.1, changes.width);
+  Object.assign(d, changes);
+  refresh();
+}
+
+function action(name) {
+  const d = drawings[sel];
+  if (!d) return;
+  if (name === 'center-x') edit({ dx: 0 });
+  if (name === 'center-y') edit({ dy: 0 });
+  if (name === 'reset-size') edit({ width: d.base_width });
+  if (name === 'reset') edit({ width: d.base_width, dx: 0, dy: 0 });
+}
+
+const resize = (factor) => edit({ width: drawings[sel].width * factor }, 'size');
+const round3 = (v) => Math.round(v * 1000) / 1000;
+
+// Drag to move, scroll to resize.
+const spreadEl = $('#spread');
+let drag = null;
+spreadEl.addEventListener('pointerdown', (e) => {
+  const el = e.target.closest('.page');
+  const i = el ? +el.dataset.index : -1;
+  if (i < 0) return;
+  sel = i;
+  const d = drawings[i];
+  drag = { el, x: e.clientX, y: e.clientY, dx: d.dx, dy: d.dy, moved: false };
+  el.setPointerCapture(e.pointerId);
+  el.classList.add('dragging');
+  refresh();
+});
+spreadEl.addEventListener('pointermove', (e) => {
+  if (!drag) return;
+  let mx = (e.clientX - drag.x) / ppi, my = (e.clientY - drag.y) / ppi;
+  if (!drag.moved && Math.hypot(mx, my) * ppi < 2) return;
+  if (!drag.moved) { pushHistory(sel); drag.moved = true; }
+  if (e.shiftKey) { if (Math.abs(mx) > Math.abs(my)) my = 0; else mx = 0; }
+  let dx = round3(drag.dx + mx), dy = round3(drag.dy + my);
+  const snap = 6 / ppi;
+  if (!e.altKey) {
+    if (Math.abs(dx) < snap) dx = 0;
+    if (Math.abs(dy) < snap) dy = 0;
+  }
+  Object.assign(drawings[sel], { dx, dy });
+  refresh();
+});
+const endDrag = () => { if (drag) drag.el.classList.remove('dragging'); drag = null; };
+spreadEl.addEventListener('pointerup', endDrag);
+spreadEl.addEventListener('pointercancel', endDrag);
+spreadEl.addEventListener('dblclick', (e) => {
+  const el = e.target.closest('.page');
+  if (el && +el.dataset.index >= 0) { sel = +el.dataset.index; action('reset'); }
+});
+spreadEl.addEventListener('wheel', (e) => {
+  const el = e.target.closest('.page');
+  if (!el || +el.dataset.index < 0) return;
+  e.preventDefault();
+  sel = +el.dataset.index;
+  const delta = e.deltaY || e.deltaX;
+  resize(Math.exp(-delta * (e.deltaMode ? 0.03 : 0.0015)));
+}, { passive: false });
+
+// Panel fields
+const field = (id, apply) => $(id).addEventListener('input', (e) => {
+  const v = parseFloat(e.target.value);
+  if (Number.isFinite(v) && drawings[sel]) edit(apply(v, drawings[sel]), 'field' + id);
+});
+field('#f-scale', (v, d) => ({ width: d.base_width * v / 100 }));
+field('#f-width', (v) => ({ width: v }));
+field('#f-height', (v, d) => ({ width: v * d.aspect }));
+field('#f-dx', (v) => ({ dx: v }));
+field('#f-dy', (v) => ({ dy: v }));
+for (const input of document.querySelectorAll('aside input')) input.addEventListener('blur', updatePanel);
+for (const b of document.querySelectorAll('[data-action]')) b.onclick = () => action(b.dataset.action);
+
+// Navigation
+$('#prev').onclick = () => goTo(left - 1);
+$('#next').onclick = () => goTo(left + 2);
+$('#goto').addEventListener('change', (e) => { goTo(+e.target.value); e.target.value = ''; e.target.blur(); });
+$('#guides').onchange = () => { refresh(); if (document.body.classList.contains('overview')) renderOverview(); };
+$('#overview-btn').onclick = () => toggleOverview();
+window.addEventListener('resize', render);
+
+function toggleOverview(on = !document.body.classList.contains('overview')) {
+  document.body.classList.toggle('overview', on);
+  $('#overview-btn').textContent = on ? 'Spread' : 'Overview';
+  if (on) renderOverview(); else render();
+}
+
+function renderOverview() {
+  const scale = 18;
+  const view = $('#overview');
+  view.replaceChildren();
+  for (let l = 0; l <= drawings.length; l += 2) {
+    const t = document.createElement('div');
+    t.className = 'thumb';
+    const pair = document.createElement('div');
+    pair.className = 'pair';
+    pair.append(makePage(pageOf(l), scale, { thumb: true, lazy: true }),
+                makePage(pageOf(l + 1), scale, { thumb: true, lazy: true }));
+    const label = document.createElement('div');
+    label.textContent = [l, l + 1].filter((n) => pageOf(n) >= 0).join('–');
+    t.append(pair, label);
+    t.onclick = () => { toggleOverview(false); goTo(Math.max(1, l)); };
+    view.append(t);
+  }
+  view.querySelector(`.thumb:nth-child(${Math.floor(left / 2) + 1})`)?.scrollIntoView({ block: 'center' });
+}
+
+document.addEventListener('keydown', (e) => {
+  const mod = e.metaKey || e.ctrlKey;
+  if (mod && e.key === 's') { e.preventDefault(); save(); return; }
+  if (mod && e.key.toLowerCase() === 'z') { e.preventDefault(); e.shiftKey ? restore(redoStack, undoStack) : restore(undoStack, redoStack); return; }
+  if (e.target.tagName === 'INPUT' && e.target.type !== 'checkbox') {
+    if (e.key === 'Enter' || e.key === 'Escape') e.target.blur();
+    return;
+  }
+  if (mod || e.altKey) return;
+  const step = e.shiftKey ? 0.1 : 0.01, d = drawings[sel];
+  const k = e.key;
+  const handled = () => e.preventDefault();
+  if (k === 'o' || k === 'O') return toggleOverview();
+  if (k === 'g' || k === 'G') { $('#guides').checked = !$('#guides').checked; return $('#guides').onchange(); }
+  if (document.body.classList.contains('overview')) return;
+  if (k === '[' || k === 'PageUp') { handled(); return goTo(left - 1); }
+  if (k === ']' || k === 'PageDown') { handled(); return goTo(left + 2); }
+  if (k === 'Tab') {
+    handled();
+    const other = sel === pageOf(left) ? pageOf(left + 1) : pageOf(left);
+    if (other >= 0) { sel = other; refresh(); }
+    return;
+  }
+  if (!d) return;
+  if (k === 'ArrowLeft') { handled(); edit({ dx: round3(d.dx - step) }, 'move'); }
+  else if (k === 'ArrowRight') { handled(); edit({ dx: round3(d.dx + step) }, 'move'); }
+  else if (k === 'ArrowUp') { handled(); edit({ dy: round3(d.dy - step) }, 'move'); }
+  else if (k === 'ArrowDown') { handled(); edit({ dy: round3(d.dy + step) }, 'move'); }
+  else if (k === '+' || k === '=') resize(e.shiftKey ? 1.05 : 1.01);
+  else if (k === '-' || k === '_') resize(1 / (e.shiftKey ? 1.05 : 1.01));
+  else if (k === 'c' || k === 'C') action('center-x');
+  else if (k === 'v' || k === 'V') action('center-y');
+  else if (k === '0') action('reset-size');
+  else if (k === 'r' || k === 'R') action('reset');
+});
+
+// ---- Saving ----
+
+function status(text, error = false) {
+  $('#status').textContent = text;
+  $('#status').classList.toggle('error', error);
+}
+
+async function post(url, body) {
+  const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body ?? {}) });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || res.statusText);
+  return data;
+}
+
+async function save() {
+  if (!dirtyCount()) return true;
+  status('Saving…');
+  try {
+    const data = await post('/api/book', { drawings: drawings.map(({ id, width, dx, dy }) => ({ id, width, dx, dy })) });
+    setData(data);
+    status('Saved to book.yml');
+    render();
+    return true;
+  } catch (err) {
+    status(err.message, true);
+    return false;
+  }
+}
+
+$('#save').onclick = save;
+$('#build').onclick = async () => {
+  if (!(await save())) return;
+  $('#build').disabled = true;
+  status('Building PDF…');
+  try {
+    const { pdf } = await post('/api/build');
+    const link = $('#pdf-link');
+    // The PDF has four front-matter pages before page 1.
+    link.href = `${pdf}?t=${Date.now()}#page=${Math.max(1, left) + 4}`;
+    link.hidden = false;
+    status('PDF built');
+  } catch (err) {
+    status(err.message, true);
+  } finally {
+    $('#build').disabled = false;
+  }
+};
+
+window.addEventListener('beforeunload', (e) => { if (dirtyCount()) e.preventDefault(); });
+
+load().catch((err) => status(err.message, true));
+</script>
+</body>
+</html>

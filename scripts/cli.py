@@ -11,6 +11,8 @@ Commands:
     rename-images      Rename date-only images to include suffix
     to-svg             Batch convert images to SVG
     to-png             Batch convert SVGs to PNG
+    build-book         Build a book interior PDF from books/NAME/book.yml
+    layout-editor      Adjust drawing sizes and positions in the browser
 
 Examples:
     ./scripts/cli.py generate-tags
@@ -23,6 +25,7 @@ Examples:
 import argparse
 import os
 import sys
+from pathlib import Path
 
 # Add scripts directory to path for imports
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -124,6 +127,21 @@ def cmd_backfill_tweets(args):
     backfill_tweets(dry_run=args.dry_run)
 
 
+def cmd_build_book(args):
+    """Build a book interior PDF."""
+    from build_book import build, REPO
+    out = build(args.name, args.bleed, args.output)
+    print(f"Wrote {out.relative_to(REPO) if out.is_relative_to(REPO) else out}")
+
+
+def cmd_layout_editor(args):
+    """Serve the drawing layout editor for a book."""
+    import sys
+    sys.argv = ['layout_editor.py', args.name, '--port', str(args.port)] + (['--no-browser'] if args.no_browser else [])
+    from layout_editor import main as editor_main
+    editor_main()
+
+
 def main():
     parser = argparse.ArgumentParser(
         description='Jekyll site automation CLI',
@@ -184,6 +202,20 @@ def main():
     p_backfill = subparsers.add_parser('backfill-tweets', help='Backfill tweet URLs for drawing pages')
     p_backfill.add_argument('--dry-run', action='store_true', help='Show what would be done without making changes')
     p_backfill.set_defaults(func=cmd_backfill_tweets)
+
+    # build-book
+    p_book = subparsers.add_parser('build-book', help='Build a book interior PDF from books/NAME/book.yml')
+    p_book.add_argument('name', help='Book directory under books/ (e.g. volume-1)')
+    p_book.add_argument('--bleed', type=float, default=0.0, help='Bleed in inches (default: 0)')
+    p_book.add_argument('--output', type=Path, help='Output PDF path (default: book-files/NAME/interior.pdf)')
+    p_book.set_defaults(func=cmd_build_book)
+
+    # layout-editor
+    p_editor = subparsers.add_parser('layout-editor', help='Adjust drawing sizes and positions in the browser')
+    p_editor.add_argument('name', help='Book directory under books/ (e.g. volume-2)')
+    p_editor.add_argument('--port', type=int, default=8765, help='Port (default: 8765)')
+    p_editor.add_argument('--no-browser', action='store_true', help="Don't open a browser")
+    p_editor.set_defaults(func=cmd_layout_editor)
 
     args = parser.parse_args()
     args.func(args)

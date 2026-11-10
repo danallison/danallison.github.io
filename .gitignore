@@ -4,6 +4,7 @@ ignore.md
 ignore/
 pngs-for-book/
 book-files/
+books/PLAN.md
 .DS_Store
 _site/
 .sass-cache/
