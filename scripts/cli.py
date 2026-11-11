@@ -11,7 +11,7 @@ Commands:
     rename-images      Rename date-only images to include suffix
     to-svg             Batch convert images to SVG
     to-png             Batch convert SVGs to PNG
-    build-book         Build a book interior PDF from books/NAME/book.yml
+    build-book         Build a book interior or cover PDF from books/NAME/book.yml
     layout-editor      Adjust drawing sizes and positions in the browser
 
 Examples:
@@ -128,9 +128,13 @@ def cmd_backfill_tweets(args):
 
 
 def cmd_build_book(args):
-    """Build a book interior PDF."""
-    from build_book import build, REPO
-    out = build(args.name, args.bleed, args.output)
+    """Build a book interior or cover PDF."""
+    from build_book import build, build_cover, REPO
+    if args.cover:
+        bleed = 0.125 if args.bleed is None else args.bleed
+        out = build_cover(args.name, args.cover, args.spine, bleed, args.guides, args.output)
+    else:
+        out = build(args.name, args.bleed or 0.0, args.output)
     print(f"Wrote {out.relative_to(REPO) if out.is_relative_to(REPO) else out}")
 
 
@@ -204,10 +208,13 @@ def main():
     p_backfill.set_defaults(func=cmd_backfill_tweets)
 
     # build-book
-    p_book = subparsers.add_parser('build-book', help='Build a book interior PDF from books/NAME/book.yml')
+    p_book = subparsers.add_parser('build-book', help='Build a book interior or cover PDF from books/NAME/book.yml')
     p_book.add_argument('name', help='Book directory under books/ (e.g. volume-1)')
-    p_book.add_argument('--bleed', type=float, default=0.0, help='Bleed in inches (default: 0)')
-    p_book.add_argument('--output', type=Path, help='Output PDF path (default: book-files/NAME/interior.pdf)')
+    p_book.add_argument('--cover', choices=['kdp', 'ingram'], help='Build the paperback cover for this printer')
+    p_book.add_argument('--spine', type=float, help='Cover spine width in inches (default: from book.yml or page count)')
+    p_book.add_argument('--guides', action='store_true', help='Draw trim, fold, safe-area and barcode guides on the cover')
+    p_book.add_argument('--bleed', type=float, help='Bleed in inches (default: 0 for interiors, 0.125 for covers)')
+    p_book.add_argument('--output', type=Path, help='Output PDF path (default: book-files/NAME/interior.pdf or cover-PRINTER.pdf)')
     p_book.set_defaults(func=cmd_build_book)
 
     # layout-editor

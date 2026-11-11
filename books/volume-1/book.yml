@@ -36,6 +36,12 @@ end_mark: {path: books/shared/end-mark.svg, width: 2.156}
 # Widths below are of the whole photo, as placed by hand in the original Google Doc.
 sizing: {crop: false}
 
+# Cover drawings. The front is as on the Lulu cover (width of the ink, in inches); the back
+# uses the default box, smaller than on the Lulu cover so it clears the barcode area.
+cover:
+  front: {id: 2025-07-05_behind-our-eyes, width: 2.921}
+  back: 2025-06-03_bowtie-to-figure-8
+
 drawings:
   - {id: 2023-11-22_triangle-faces, width: 2.531}
   - {id: 2023-12-02_wizard-cat-portal-hat, width: 4.26}

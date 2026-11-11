@@ -152,7 +152,10 @@ Each SVG is rendered from vector (not upscaled) to fit within page-width × page
 ```bash
 ./scripts/cli.py build-book volume-2              # → book-files/volume-2/interior.pdf
 ./scripts/cli.py build-book volume-1 --bleed 0.125  # → book-files/volume-1/interior-bleed.pdf
+./scripts/cli.py build-book volume-2 --cover kdp    # → book-files/volume-2/cover-kdp.pdf (also: ingram)
+./scripts/cli.py build-book volume-2 --cover kdp --guides  # same, with trim/fold/safe-area/barcode guides
 ```
+Covers use `books/shared/cover.typ` (matches the Volume 1 Lulu cover) and the `cover:` drawings in `book.yml`. The spine width comes from the interior page count × 0.002252" (white paper) unless `cover: {spine: {kdp: ..., ingram: ...}}` sets it; use IngramSpark's emailed template value for `ingram`. The build warns if the back drawing runs into the barcode area (bottom corner by the spine).
 Layout lives in `books/shared/interior.typ` (Typst; matches the Volume 1 Google Docs layout). Fonts are bundled in `books/shared/fonts/`. Drawings are placed as vector SVGs from `svgs/`, sized and centered by their ink bounds (measured with ImageMagick, cached in `book-files/.ink-bounds.json`; the first build takes ~30s). The publishing plan and launch checklist are in `books/PLAN.md` (local only; gitignored).
 
 **layout_editor.py** - Adjust drawing sizes and positions in the browser

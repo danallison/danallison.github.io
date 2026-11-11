@@ -39,6 +39,13 @@ preface: |
   Seattle, Washington \
   TODO month 2026
 
+# Cover drawings: sized to fit their boxes (front 4.2" x 5", back 4.2" x 4.9"; see
+# scripts/build_book.py). Override with
+# width/height/scale/dx/dy, as for interior drawings.
+cover:
+  front: 2026-02-26_1
+  back: 2025-12-05_scribbles
+
 drawings:
   - {id: 2026-10-26_1, scale: 0.8}
   - 2026-01-09_1
