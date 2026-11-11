@@ -12,6 +12,7 @@ Commands:
     to-svg             Batch convert images to SVG
     to-png             Batch convert SVGs to PNG
     build-book         Build a book interior or cover PDF from books/NAME/book.yml
+    build-ebook        Build a reflowable EPUB ebook from books/NAME/book.yml
     layout-editor      Adjust drawing sizes and positions in the browser
 
 Examples:
@@ -138,6 +139,13 @@ def cmd_build_book(args):
     print(f"Wrote {out.relative_to(REPO) if out.is_relative_to(REPO) else out}")
 
 
+def cmd_build_ebook(args):
+    """Build a reflowable EPUB ebook."""
+    from build_epub import build_epub, REPO
+    out = build_epub(args.name, args.output)
+    print(f"Wrote {out.relative_to(REPO) if out.is_relative_to(REPO) else out}")
+
+
 def cmd_layout_editor(args):
     """Serve the drawing layout editor for a book."""
     import sys
@@ -216,6 +224,12 @@ def main():
     p_book.add_argument('--bleed', type=float, help='Bleed in inches (default: 0 for interiors, 0.125 for covers)')
     p_book.add_argument('--output', type=Path, help='Output PDF path (default: book-files/NAME/interior.pdf or cover-PRINTER.pdf)')
     p_book.set_defaults(func=cmd_build_book)
+
+    # build-ebook
+    p_ebook = subparsers.add_parser('build-ebook', help='Build a reflowable EPUB ebook from books/NAME/book.yml')
+    p_ebook.add_argument('name', help='Book directory under books/ (e.g. volume-2)')
+    p_ebook.add_argument('--output', type=Path, help='Output EPUB path (default: book-files/NAME/NAME.epub)')
+    p_ebook.set_defaults(func=cmd_build_ebook)
 
     # layout-editor
     p_editor = subparsers.add_parser('layout-editor', help='Adjust drawing sizes and positions in the browser')

@@ -158,6 +158,12 @@ Each SVG is rendered from vector (not upscaled) to fit within page-width × page
 Covers use `books/shared/cover.typ` (matches the Volume 1 Lulu cover) and the `cover:` drawings in `book.yml`. The spine width comes from the interior page count × 0.002252" (white paper) unless `cover: {spine: {kdp: ..., ingram: ...}}` sets it; use IngramSpark's emailed template value for `ingram`. The build warns if the back drawing runs into the barcode area (bottom corner by the spine).
 Layout lives in `books/shared/interior.typ` (Typst; matches the Volume 1 Google Docs layout). Fonts are bundled in `books/shared/fonts/`. Drawings are placed as vector SVGs from `svgs/`, sized and centered by their ink bounds (measured with ImageMagick, cached in `book-files/.ink-bounds.json`; the first build takes ~30s). The publishing plan and launch checklist are in `books/PLAN.md` (local only; gitignored).
 
+**build_epub.py** - Build a reflowable EPUB 3 ebook from `books/NAME/book.yml`
+```bash
+./scripts/cli.py build-ebook volume-2   # → book-files/volume-2/volume-2.epub and volume-2-cover.jpg
+```
+One drawing per page, cropped to its ink and saved as a 4-gray PNG fitted to 1200×1600 px (cached in `book-files/NAME/epub-images/`), to keep Kindle's per-MB delivery fee low; the build prints the size and fee. The cover is the front of the KDP paperback cover. Front matter is converted from the Typst markup in `book.yml`; the ebook ISBN comes from `isbn: {ebook: ...}` when set. Validate with EPUBCheck (`brew install epubcheck`) before uploading.
+
 **layout_editor.py** - Adjust drawing sizes and positions in the browser
 ```bash
 ./scripts/cli.py layout-editor volume-2   # serves http://127.0.0.1:8765/ and opens it
