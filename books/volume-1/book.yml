@@ -259,7 +259,7 @@ drawings:
   - {id: 2025-09-02_box, width: 3.823}
   - {id: 2025-09-04_rooted, width: 3.823}
   - {id: 2025-09-05_ladder, width: 2.688}
-  - {id: 2025-09-08_angelic-wobble, width: 5.094}
+  - {id: 2025-09-08_angelic-wobble, width: 4.94}  # was 5.094; clears KDP's 0.5" inside margin
   - {id: 2025-09-10_square-warp, width: 3.823}
   - {id: 2025-09-12_night-sky-cascades, width: 3.823}
   - {id: 2025-09-13_squares-and-circles, width: 4.031}

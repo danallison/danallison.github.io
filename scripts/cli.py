@@ -13,6 +13,7 @@ Commands:
     to-png             Batch convert SVGs to PNG
     build-book         Build a book interior or cover PDF from books/NAME/book.yml
     build-ebook        Build a reflowable EPUB ebook from books/NAME/book.yml
+    preflight          Check a book's interior and covers against KDP and IngramSpark rules
     layout-editor      Adjust drawing sizes and positions in the browser
 
 Examples:
@@ -146,6 +147,12 @@ def cmd_build_ebook(args):
     print(f"Wrote {out.relative_to(REPO) if out.is_relative_to(REPO) else out}")
 
 
+def cmd_preflight(args):
+    """Check a book's interior and covers against printer file rules."""
+    from preflight import preflight
+    sys.exit(0 if preflight(args.name, [args.printer] if args.printer else None) else 1)
+
+
 def cmd_layout_editor(args):
     """Serve the drawing layout editor for a book."""
     import sys
@@ -230,6 +237,12 @@ def main():
     p_ebook.add_argument('name', help='Book directory under books/ (e.g. volume-2)')
     p_ebook.add_argument('--output', type=Path, help='Output EPUB path (default: book-files/NAME/NAME.epub)')
     p_ebook.set_defaults(func=cmd_build_ebook)
+
+    # preflight
+    p_pre = subparsers.add_parser('preflight', help="Check a book's interior and covers against KDP and IngramSpark rules")
+    p_pre.add_argument('name', help='Book directory under books/ (e.g. volume-2)')
+    p_pre.add_argument('--printer', choices=['kdp', 'ingram'], help='Check one printer only')
+    p_pre.set_defaults(func=cmd_preflight)
 
     # layout-editor
     p_editor = subparsers.add_parser('layout-editor', help='Adjust drawing sizes and positions in the browser')

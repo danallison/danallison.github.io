@@ -164,6 +164,12 @@ Layout lives in `books/shared/interior.typ` (Typst; matches the Volume 1 Google 
 ```
 One drawing per page, cropped to its ink and saved as a 4-gray PNG fitted to 1200×1600 px (cached in `book-files/NAME/epub-images/`), to keep Kindle's per-MB delivery fee low; the build prints the size and fee. The cover is the front of the KDP paperback cover. Front matter is converted from the Typst markup in `book.yml`; the ebook ISBN comes from `isbn: {ebook: ...}` when set. Validate with EPUBCheck (`brew install epubcheck`) before uploading.
 
+**preflight.py** - Check a book against KDP and IngramSpark file rules before upload
+```bash
+./scripts/cli.py preflight volume-2 [--printer kdp|ingram]   # exits 1 if any check fails
+```
+Builds the interior and each printer's cover in memory and checks trim size, page count, embedded fonts, grayscale-only color, each page's margins (KDP's inside margin by page count; 0.5" all round for IngramSpark), cover safe areas, spine text, and that the barcode area is blank. Margins are measured on pages rendered with ImageMagick at 100 ppi.
+
 **layout_editor.py** - Adjust drawing sizes and positions in the browser
 ```bash
 ./scripts/cli.py layout-editor volume-2   # serves http://127.0.0.1:8765/ and opens it
