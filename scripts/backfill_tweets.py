@@ -24,8 +24,8 @@ from daily_drawing import (
     DRAWINGS_DIR,
     METADATA_DIR,
     SEARCH_PHRASE,
-    SUPABASE_URL,
-    supabase_headers,
+    fetch_account_tweets,
+    first_photo_url,
     update_frontmatter_with_tweet,
 )
 
@@ -35,44 +35,22 @@ SEARCH_WINDOW_DAYS = 2
 RMSE_THRESHOLD = 0.15
 
 
+# Photo URL for each goodnight tweet, filled by fetch_all_goodnight_tweets().
+_PHOTO_URLS: dict[str, str] = {}
+
+
 def fetch_all_goodnight_tweets() -> list[dict]:
-    """Fetch all goodnight tweets from Community Archive, paginated."""
-    all_tweets = []
-    offset = 0
-    page_size = 1000
-
-    while True:
-        print(f"Fetching tweets (offset {offset})...")
-        params = {
-            "account_id": f"eq.{ACCOUNT_ID}",
-            "full_text": f"ilike.*{SEARCH_PHRASE}*",
-            "order": "created_at.asc",
-            "limit": str(page_size),
-            "offset": str(offset),
-            "select": "tweet_id,created_at",
-        }
-
-        response = requests.get(
-            f"{SUPABASE_URL}/tweets",
-            headers=supabase_headers(),
-            params=params,
-            timeout=30,
-        )
-
-        if response.status_code != 200:
-            sys.exit(f"Error fetching tweets: {response.status_code} {response.text}")
-
-        tweets = response.json()
-        if not tweets:
-            break
-
-        all_tweets.extend(tweets)
-        print(f"  Got {len(tweets)} tweets (total: {len(all_tweets)})")
-
-        if len(tweets) < page_size:
-            break
-        offset += page_size
-
+    """Fetch all goodnight tweets from the Community Archive, oldest first."""
+    print("Fetching all tweets from Community Archive (this walks the full history)...")
+    all_tweets = [
+        t for t in fetch_account_tweets(datetime(2006, 3, 1))
+        if SEARCH_PHRASE.lower() in (t.get("full_text") or "").lower()
+    ]
+    for t in all_tweets:
+        url = first_photo_url(t)
+        if url:
+            _PHOTO_URLS[str(t["tweet_id"])] = url
+    print(f"  Got {len(all_tweets)} goodnight tweets")
     return all_tweets
 
 
@@ -108,34 +86,9 @@ def find_drawings_without_tweets(metadata_dir: Path) -> list[Path]:
 
 
 def fetch_all_media_urls(date_to_tweets: dict[str, list[str]]) -> dict[str, str]:
-    """Fetch media URLs for all tweets in batches."""
-    all_tids = []
-    for tids in date_to_tweets.values():
-        all_tids.extend(tids)
-
-    tweet_media = {}
-    for i in range(0, len(all_tids), 50):
-        batch = all_tids[i:i + 50]
-        resp = requests.get(
-            f"{SUPABASE_URL}/tweet_media",
-            headers=supabase_headers(),
-            params={
-                "tweet_id": f"in.({','.join(batch)})",
-                "media_type": "eq.photo",
-                "select": "tweet_id,media_url",
-                "limit": "1000",
-            },
-            timeout=30,
-        )
-        if resp.status_code == 200:
-            for item in resp.json():
-                tid = str(item["tweet_id"])
-                if tid not in tweet_media:
-                    tweet_media[tid] = item["media_url"]
-        print(f"  Fetched media batch {i // 50 + 1}/{(len(all_tids) + 49) // 50} "
-              f"({len(tweet_media)} URLs so far)")
-
-    return tweet_media
+    """Return photo URLs for the given tweets (media comes with each tweet in API v1)."""
+    wanted = {tid for tids in date_to_tweets.values() for tid in tids}
+    return {tid: url for tid, url in _PHOTO_URLS.items() if tid in wanted}
 
 
 def compare_images(local_path: Path, remote_url: str) -> float | None:

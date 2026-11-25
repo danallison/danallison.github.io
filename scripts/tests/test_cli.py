@@ -5,7 +5,7 @@ Run with: pytest scripts/tests/test_cli.py -v
 """
 
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
@@ -130,57 +130,67 @@ tags:
 
 
 class TestFetchGoodnightTweets:
-    """Tests for fetch_goodnight_tweets with mocked HTTP."""
+    """Tests for fetch_goodnight_tweets with mocked HTTP (Community Archive API v1)."""
 
+    @staticmethod
+    def _page(tweets, next_cursor=None, status=200):
+        r = MagicMock()
+        r.status_code = status
+        r.json.return_value = {"data": tweets, "next_cursor": next_cursor}
+        return r
+
+    @patch.dict('os.environ', {'CA_API_KEY': 'cak_test'})
     @patch('daily_drawing.requests.get')
     def test_returns_tweets_with_media(self, mock_get):
         from daily_drawing import fetch_goodnight_tweets
 
-        # Mock tweets response
-        tweets_response = MagicMock()
-        tweets_response.status_code = 200
-        tweets_response.json.return_value = [
-            {"tweet_id": "123", "created_at": "2024-03-15T22:00:00+00:00"},
-            {"tweet_id": "456", "created_at": "2024-03-16T22:00:00+00:00"},
+        tweets = [
+            {"tweet_id": "123", "created_at": "2024-03-15T22:00:00Z",
+             "full_text": "You are loved. You are free. Goodnight.",
+             "media": [{"media_url": "https://example.com/img1.jpg", "media_type": "photo"}]},
+            {"tweet_id": "456", "created_at": "2024-03-16T22:00:00Z",
+             "full_text": "You are loved. You are free. Goodnight.",
+             "media": [{"media_url": "https://example.com/img2.jpg", "media_type": "photo"}]},
+            {"tweet_id": "789", "created_at": "2024-03-16T23:00:00Z",
+             "full_text": "unrelated tweet",
+             "media": [{"media_url": "https://example.com/x.jpg", "media_type": "photo"}]},
         ]
-
-        # Mock media responses
-        media_response_1 = MagicMock()
-        media_response_1.status_code = 200
-        media_response_1.json.return_value = [{"media_url": "https://example.com/img1.jpg"}]
-
-        media_response_2 = MagicMock()
-        media_response_2.status_code = 200
-        media_response_2.json.return_value = [{"media_url": "https://example.com/img2.jpg"}]
-
-        mock_get.side_effect = [tweets_response, media_response_1, media_response_2]
+        mock_get.side_effect = lambda *a, **k: self._page(
+            tweets if k["params"]["since"].startswith("2024-03-01") else [])
 
         result = fetch_goodnight_tweets(datetime(2024, 1, 1))
 
-        assert len(result) == 2
-        assert result[0]["id"] == "123"
-        assert result[0]["image_url"] == "https://example.com/img1.jpg"
-        assert result[1]["id"] == "456"
+        ids = [r["id"] for r in result]
+        assert ids == ["456", "123"]  # newest first, unrelated tweet excluded
+        assert result[1]["image_url"] == "https://example.com/img1.jpg"
+        assert mock_get.call_args.kwargs["headers"]["Authorization"] == "Bearer cak_test"
 
+    @patch.dict('os.environ', {'CA_API_KEY': 'cak_test'})
     @patch('daily_drawing.requests.get')
     def test_skips_tweets_without_media(self, mock_get):
         from daily_drawing import fetch_goodnight_tweets
 
-        tweets_response = MagicMock()
-        tweets_response.status_code = 200
-        tweets_response.json.return_value = [
-            {"tweet_id": "123", "created_at": "2024-03-15T22:00:00+00:00"},
-        ]
+        tweet = {"tweet_id": "123", "created_at": "2024-03-15T22:00:00Z",
+                 "full_text": "You are loved. You are free. Goodnight.", "media": []}
+        mock_get.side_effect = lambda *a, **k: self._page([tweet])
 
-        media_response = MagicMock()
-        media_response.status_code = 200
-        media_response.json.return_value = []  # No media
-
-        mock_get.side_effect = [tweets_response, media_response]
-
-        result = fetch_goodnight_tweets(datetime(2024, 1, 1))
+        result = fetch_goodnight_tweets(datetime.utcnow() - timedelta(days=2))
         assert len(result) == 0
 
+    @patch.dict('os.environ', {'CA_API_KEY': 'cak_test'})
+    @patch('daily_drawing.requests.get')
+    def test_follows_cursor(self, mock_get):
+        from daily_drawing import fetch_account_tweets
+
+        pages = [self._page([{"tweet_id": "1"}], next_cursor="c1"),
+                 self._page([{"tweet_id": "2"}], next_cursor=None)]
+        mock_get.side_effect = pages
+        start = datetime.utcnow() - timedelta(days=1)
+        result = fetch_account_tweets(start, start + timedelta(days=2))
+        assert [t["tweet_id"] for t in result] == ["1", "2"]
+        assert mock_get.call_args_list[1].kwargs["params"]["cursor"] == "c1"
+
+    @patch.dict('os.environ', {'CA_API_KEY': 'cak_test'})
     @patch('daily_drawing.requests.get')
     def test_exits_on_api_error(self, mock_get):
         from daily_drawing import fetch_goodnight_tweets
@@ -190,6 +200,12 @@ class TestFetchGoodnightTweets:
         error_response.text = "Internal Server Error"
         mock_get.return_value = error_response
 
+        with pytest.raises(SystemExit):
+            fetch_goodnight_tweets(datetime(2024, 1, 1))
+
+    @patch.dict('os.environ', {}, clear=True)
+    def test_exits_without_key(self):
+        from daily_drawing import fetch_goodnight_tweets
         with pytest.raises(SystemExit):
             fetch_goodnight_tweets(datetime(2024, 1, 1))
 

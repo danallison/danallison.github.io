@@ -4,11 +4,13 @@
 Finds tweets by @danallison containing "You are loved. You are free. Goodnight."
 with images, downloads them, and runs the metadata/SVG pipeline.
 
-Uses the Community Archive Supabase API (https://github.com/TheExGenesis/community-archive)
-which provides free access to archived Twitter data.
+Uses the Community Archive API v1 (https://github.com/TheExGenesis/community-archive),
+which needs a personal key in the CA_API_KEY environment variable.
 """
 
+import os
 import re
+import time
 import subprocess
 import sys
 from datetime import datetime, timedelta
@@ -19,11 +21,11 @@ try:
 except ImportError:
     sys.exit("Error: requests not installed. Run: pip install requests")
 
-# Community Archive Supabase API
-# Public anon key from https://github.com/TheExGenesis/community-archive/blob/main/docs/api-doc.md
-# This key is intentionally public and provides read-only access to archived Twitter data.
-SUPABASE_URL = "https://fabxmporizzqflnftavs.supabase.co/rest/v1"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZhYnhtcG9yaXp6cWZsbmZ0YXZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjIyNDQ5MTIsImV4cCI6MjAzNzgyMDkxMn0.UIEJiUNkLsW28tBHmG-RQDW-I5JNlJLt62CSk9D_qG8"
+# Community Archive API v1 (https://analytics.community-archive.org/v1).
+# Needs a personal key in the CA_API_KEY environment variable
+# (create one at https://www.community-archive.org/settings/api-keys).
+# The old public Supabase API was retired on 2026-11-19.
+CA_API_URL = "https://analytics.community-archive.org/v1"
 ACCOUNT_ID = "14213298"  # @danallison's Twitter account ID
 SEARCH_PHRASE = "You are loved"
 DRAWINGS_DIR = Path("drawings")
@@ -68,69 +70,84 @@ def get_local_date_counts(drawings_dir: Path) -> dict[str, int]:
     return counts
 
 
-def supabase_headers():
-    """Get headers for Supabase API requests."""
-    return {
-        "apikey": SUPABASE_KEY,
-        "Authorization": f"Bearer {SUPABASE_KEY}",
-    }
+def ca_headers():
+    """Get headers for Community Archive API requests."""
+    key = os.environ.get("CA_API_KEY")
+    if not key:
+        sys.exit("Error: CA_API_KEY is not set (Community Archive API key)")
+    return {"Authorization": f"Bearer {key}"}
+
+
+def ca_get(path: str, params: dict) -> dict:
+    """GET a Community Archive API path, retrying on rate limits."""
+    for _ in range(10):
+        response = requests.get(f"{CA_API_URL}{path}", headers=ca_headers(),
+                                params=params, timeout=60)
+        if response.status_code in (429, 503):
+            time.sleep(int(response.headers.get("Retry-After", "5")))
+            continue
+        if response.status_code != 200:
+            sys.exit(f"Error: Failed to fetch {path}: {response.status_code} {response.text}")
+        return response.json()
+    sys.exit(f"Error: Gave up on {path} after repeated rate limiting")
+
+
+def fetch_account_tweets(since_date: datetime, until_date: datetime | None = None) -> list[dict]:
+    """Fetch all of the account's original tweets since a date, oldest first.
+
+    Walks 30-day windows so long ranges stay within the API's query budget.
+    """
+    until_date = until_date or (datetime.utcnow() + timedelta(days=1))
+    tweets = []
+    win_start = since_date
+    while win_start < until_date:
+        win_end = min(win_start + timedelta(days=30), until_date)
+        cursor = None
+        while True:
+            params = {
+                "order": "asc",
+                "limit": "200",
+                "exclude_retweets": "true",
+                "since": win_start.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                "until": win_end.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            }
+            if cursor:
+                params["cursor"] = cursor
+            page = ca_get(f"/accounts/{ACCOUNT_ID}/tweets", params)
+            tweets.extend(page.get("data") or [])
+            cursor = page.get("next_cursor")
+            if cursor is None:
+                break
+        win_start = win_end
+    return tweets
+
+
+def first_photo_url(tweet: dict) -> str | None:
+    """Return the first photo URL attached to a tweet, if any."""
+    for m in tweet.get("media") or []:
+        if m.get("media_type", "photo") == "photo" and m.get("media_url"):
+            return m["media_url"]
+    return None
 
 
 def fetch_goodnight_tweets(since_date: datetime) -> list[dict]:
-    """Fetch goodnight tweets from Community Archive Supabase API."""
+    """Fetch goodnight drawing tweets (with photos) since a date, newest first."""
     print("Fetching tweets from Community Archive...")
-
-    # Format date for Supabase query
-    since_str = since_date.strftime("%Y-%m-%dT00:00:00+00:00")
-
-    # Query tweets table
-    params = {
-        "account_id": f"eq.{ACCOUNT_ID}",
-        "created_at": f"gte.{since_str}",
-        "full_text": f"ilike.*{SEARCH_PHRASE}*",
-        "order": "created_at.desc",
-        "limit": "100",
-    }
-
-    response = requests.get(
-        f"{SUPABASE_URL}/tweets",
-        headers=supabase_headers(),
-        params=params,
-        timeout=30,
-    )
-
-    if response.status_code != 200:
-        sys.exit(f"Error: Failed to fetch tweets: {response.status_code} {response.text}")
-
-    tweets = response.json()
+    tweets = [
+        t for t in fetch_account_tweets(since_date)
+        if SEARCH_PHRASE.lower() in (t.get("full_text") or "").lower()
+    ]
     print(f"Found {len(tweets)} goodnight tweets since {since_date.strftime('%Y-%m-%d')}")
 
-    # Fetch media for each tweet
     results = []
-    for tweet in tweets:
-        tweet_id = tweet.get("tweet_id")
-        if not tweet_id:
-            continue
-
-        # Query tweet_media table for this tweet
-        media_response = requests.get(
-            f"{SUPABASE_URL}/tweet_media",
-            headers=supabase_headers(),
-            params={"tweet_id": f"eq.{tweet_id}", "media_type": "eq.photo", "limit": "1"},
-            timeout=30,
-        )
-
-        if media_response.status_code == 200:
-            media_list = media_response.json()
-            if media_list:
-                media_url = media_list[0].get("media_url")
-                if media_url:
-                    results.append({
-                        "id": str(tweet_id),
-                        "created_at": tweet.get("created_at"),
-                        "image_url": media_url,
-                    })
-
+    for tweet in sorted(tweets, key=lambda t: t["created_at"], reverse=True):
+        image_url = first_photo_url(tweet)
+        if tweet.get("tweet_id") and image_url:
+            results.append({
+                "id": str(tweet["tweet_id"]),
+                "created_at": tweet.get("created_at"),
+                "image_url": image_url,
+            })
     return results
 
 

@@ -16,10 +16,10 @@ A Python script that fetches "goodnight" drawing tweets since the last local dra
 
 Uses the [Community Archive](https://github.com/TheExGenesis/community-archive) Supabase API, which provides free access to archived Twitter data.
 
-- **API Base**: `https://fabxmporizzqflnftavs.supabase.co/rest/v1`
-- **tweets table**: Query by `account_id=14213298`, filter by "You are loved" in `full_text`
-- **tweet_media table**: Query by `tweet_id` to get image URLs
-- No authentication required (uses public anon key)
+- **API Base**: `https://analytics.community-archive.org/v1` (API v1; the old public Supabase API was retired 2026-11-19)
+- **Timeline**: `GET /accounts/14213298/tweets?since=…&until=…` in 30-day windows, paged by `next_cursor`; filter by "You are loved" in `full_text`
+- **Images**: each tweet's `media[]` carries its photo URLs
+- **Auth**: personal key in the `CA_API_KEY` env var / repo secret (`Authorization: Bearer cak_…`)
 
 ### Workflow
 

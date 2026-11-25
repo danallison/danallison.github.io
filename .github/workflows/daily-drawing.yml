@@ -25,6 +25,8 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Fetch and process drawings
+        env:
+          CA_API_KEY: ${{ secrets.CA_API_KEY }}
         run: ./scripts/cli.py daily-drawing --commit
 
       - name: Push changes
