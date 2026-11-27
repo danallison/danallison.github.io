@@ -20,6 +20,10 @@ copyright: |
 
   https://danallison.info
 
+# ISBNs (see the allocation table in books/PLAN.md). Each one set is listed on the copyright
+# page of both the print book and the ebook, and checked for typos when building.
+# isbn: {paperback: 978-..., ebook: 978-...}
+
 # TODO: dedication
 dedication: TODO dedication
 
@@ -38,6 +42,12 @@ preface: |
   Dan Allison \
   Seattle, Washington \
   TODO month 2026
+
+# About the artist page, after the last drawing (Typst markup, like the preface). Optional
+# photo above it: about_photo: images/PATH.jpg (grayscale for print).
+# TODO: write the About the artist text
+about: |
+  TODO about the artist
 
 # Cover drawings: sized to fit their boxes (front 4.2" x 5", back 4.2" x 4.9"; see
 # scripts/build_book.py). Override with

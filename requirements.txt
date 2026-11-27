@@ -1,0 +1,6 @@
+# Python packages for scripts/ (install into the project venv: .venv/bin/pip install -r requirements.txt).
+# Also needed: ImageMagick and potrace (brew install imagemagick potrace).
+PyYAML==6.0.3
+requests==2.32.5
+typst==0.15.2
+pytest==9.0.2

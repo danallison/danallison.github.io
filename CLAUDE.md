@@ -4,8 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Python Environment
 
-Python scripts require the project-local virtual environment (`.venv/`). Activate it before running scripts:
+Python scripts require the project-local virtual environment (`.venv/`). Activate it before running scripts (the packages are listed in `requirements.txt`):
 ```bash
+.venv/bin/pip install -r requirements.txt   # first time
 source .venv/bin/activate
 ./scripts/cli.py <command>
 ```
@@ -148,7 +149,7 @@ Each SVG is rendered from vector (not upscaled) to fit within page-width × page
 | `--overwrite` | `false` | Overwrite existing PNGs |
 | `--jobs` | CPU count | Parallel workers |
 
-**build_book.py** - Build a book interior PDF from `books/NAME/book.yml` (requires: `pip install typst pyyaml` in `.venv`, and ImageMagick)
+**build_book.py** - Build a book interior PDF from `books/NAME/book.yml` (requires the `requirements.txt` packages and ImageMagick)
 ```bash
 ./scripts/cli.py build-book volume-2              # → book-files/volume-2/interior.pdf
 ./scripts/cli.py build-book volume-1 --bleed 0.125  # → book-files/volume-1/interior-bleed.pdf
@@ -156,6 +157,7 @@ Each SVG is rendered from vector (not upscaled) to fit within page-width × page
 ./scripts/cli.py build-book volume-2 --cover kdp --guides  # same, with trim/fold/safe-area/barcode guides
 ```
 Covers use `books/shared/cover.typ` (matches the Volume 1 Lulu cover) and the `cover:` drawings in `book.yml`. The spine width comes from the interior page count × 0.002252" (white paper) unless `cover: {spine: {kdp: ..., ingram: ...}}` sets it; use IngramSpark's emailed template value for `ingram`. The build warns if the back drawing runs into the barcode area (bottom corner by the spine).
+Front and back matter come from `book.yml` text fields (Typst markup): `copyright`, `dedication`, `preface`, and `about` (the "About the artist" page after the last drawing, with an optional `about_photo:` image path). `isbn: {paperback: ..., ebook: ...}` lists each ISBN on the copyright page (print and ebook alike) and is checked for typos. If the page count comes out odd, the build adds a blank last page, since IngramSpark needs an even count.
 Layout lives in `books/shared/interior.typ` (Typst; matches the Volume 1 Google Docs layout). Fonts are bundled in `books/shared/fonts/`. Drawings are placed as vector SVGs from `svgs/`, sized and centered by their ink bounds (measured with ImageMagick, cached in `book-files/.ink-bounds.json`; the first build takes ~30s). The publishing plan and launch checklist are in `books/PLAN.md` (local only; gitignored).
 
 **build_epub.py** - Build a reflowable EPUB 3 ebook from `books/NAME/book.yml`
@@ -168,7 +170,7 @@ One drawing per page, cropped to its ink and saved as a 4-gray PNG fitted to 120
 ```bash
 ./scripts/cli.py preflight volume-2 [--printer kdp|ingram]   # exits 1 if any check fails
 ```
-Builds the interior and each printer's cover in memory and checks trim size, page count, embedded fonts, grayscale-only color, each page's margins (KDP's inside margin by page count; 0.5" all round for IngramSpark), cover safe areas, spine text, and that the barcode area is blank. Margins are measured on pages rendered with ImageMagick at 100 ppi.
+Checks that the text fields have no `TODO`s left and that the paperback and ebook ISBNs are set, then builds the interior and each printer's cover in memory and checks trim size, page count, embedded fonts, grayscale-only color, each page's margins (KDP's inside margin by page count; 0.5" all round for IngramSpark), cover safe areas, spine text, and that the barcode area is blank. Margins are measured on pages rendered with ImageMagick at 100 ppi.
 
 **layout_editor.py** - Adjust drawing sizes and positions in the browser
 ```bash

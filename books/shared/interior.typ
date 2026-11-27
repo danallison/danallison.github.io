@@ -45,8 +45,14 @@
 #at(4.631in, align(center, text(size: 14pt)[by #book.author]))
 #pagebreak()
 
-// Copyright page
-#at(2.398in, x: margin, width: text-width, align(center, markup(book.copyright)))
+// Copyright page, with an "ISBN ... (format)" line for each ISBN that's set
+#at(2.398in, x: margin, width: text-width, align(center, {
+  markup(book.copyright)
+  if book.isbns.len() > 0 {
+    parbreak()
+    book.isbns.map(((fmt, isbn)) => [ISBN #isbn (#fmt)]).join(linebreak())
+  }
+}))
 #pagebreak()
 
 // Dedication
@@ -69,7 +75,22 @@
   ]
 }
 
+// About the artist, with an optional photo above the text
+#if book.at("about", default: none) != none {
+  page(margin: (left: bleed + margin, right: bleed + margin, top: bleed + 1.212in, bottom: bleed + margin))[
+    #if book.at("about_photo", default: none) != none {
+      align(center, block(below: 0.4in, image("/" + book.about_photo, width: 2in)))
+    }
+    #block(below: 1.531in - 1.212in, text(size: 16pt, weight: 600)[About the artist])
+    #set par(justify: true)
+    #markup(book.about)
+  ]
+}
+
 // End mark
 #if book.at("end_mark", default: none) != none {
   page(centered(book.end_mark))
 }
+
+// Blank last page, added by build_book.py when the page count would otherwise be odd
+#if sys.inputs.at("pad", default: "false") == "true" { page[] }

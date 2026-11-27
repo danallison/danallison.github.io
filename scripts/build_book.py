@@ -27,6 +27,9 @@ drawings entries are either a drawing id or a mapping with `id` and one of `widt
 `max_width`, `max_height` (the box, in inches) and `crop` (false to place whole photos, as
 Volume 1 does).
 
+ISBNs are set by `isbn: {paperback: ..., ebook: ...}` in book.yml. Every one that's set is
+listed on the copyright page (of the print book and the ebook), and each is checked for typos.
+
 The cover is set by `cover:` in book.yml: `front` and `back` drawings (entries like the ones
 above, always sized by their ink), plus optional `spine: {kdp: ..., ingram: ...}` widths,
 `sizing: {front: {...}, back: {...}}` boxes, and `barcode: false` to leave no barcode area.
@@ -119,6 +122,28 @@ def resolve_image(path: str, entry: dict, sizing: dict, crop: list = None) -> di
             'dx': entry.get('dx', 0), 'dy': entry.get('dy', 0)}
 
 
+ISBN_FORMATS = ('paperback', 'hardcover', 'ebook')
+
+
+def isbn_list(book: dict) -> list:
+    """The book's ISBNs as [(format, isbn)] in ISBN_FORMATS order, after checking each one."""
+    isbns = book.get('isbn') or {}
+    unknown = set(isbns) - set(ISBN_FORMATS)
+    if unknown:
+        raise ValueError(f"Unknown ISBN format(s): {', '.join(sorted(unknown))} (use {', '.join(ISBN_FORMATS)})")
+    out = []
+    for fmt in ISBN_FORMATS:
+        isbn = str(isbns.get(fmt) or '').strip()
+        if not isbn:
+            continue
+        digits = isbn.replace('-', '').replace(' ', '')
+        if not (len(digits) == 13 and digits.isdigit() and
+                sum(int(d) * (3 if i % 2 else 1) for i, d in enumerate(digits)) % 10 == 0):
+            raise ValueError(f"The {fmt} ISBN {isbn} isn't a valid ISBN-13 (check for a typo)")
+        out.append((fmt, isbn))
+    return out
+
+
 def resolve_book(book: dict) -> dict:
     sizing = {**DEFAULT_SIZING, **book.get('sizing', {})}
     entries = [{'id': e} if isinstance(e, str) else e for e in book['drawings']]
@@ -130,31 +155,10 @@ def resolve_book(book: dict) -> dict:
 
     drawings = [{'id': e['id'], **resolve_image(f"/svgs/{e['id']}.svg", e, sizing, bounds.get(svg))}
                 for e, svg in zip(entries, svgs)]
-    resolved = {**book, 'drawings': drawings}
+    resolved = {**book, 'drawings': drawings, 'isbns': isbn_list(book)}
     if book.get('end_mark'):
         resolved['end_mark'] = resolve_image('/' + book['end_mark']['path'], book['end_mark'], sizing)
     return resolved
-
-
-def build(name: str, bleed: float = 0.0, output: Path = None) -> Path:
-    import typst
-
-    book_dir = REPO / 'books' / name
-    book = yaml.safe_load((book_dir / 'book.yml').read_text())
-    resolved = resolve_book(book)
-
-    if output is None:
-        output = REPO / 'book-files' / name / ('interior-bleed.pdf' if bleed else 'interior.pdf')
-    output.parent.mkdir(parents=True, exist_ok=True)
-
-    typst.compile(
-        str(TEMPLATE),
-        output=str(output),
-        root=str(REPO),
-        font_paths=[str(FONTS)],
-        sys_inputs={'book': json.dumps(resolved), 'bleed': str(bleed)},
-    )
-    return output
 
 
 def page_count(pdf: bytes) -> int:
@@ -162,15 +166,32 @@ def page_count(pdf: bytes) -> int:
     return int(re.search(rb'/Type\s*/Pages\s*/Count\s+(\d+)', pdf).group(1))
 
 
+def compile_interior(resolved: dict, bleed: float = 0.0, **kwargs):
+    """Compile the interior (PDF bytes, or PNG pages with format='png' and ppi), ending on a
+    blank page if needed so the page count is even, as IngramSpark requires."""
+    import typst
+
+    args = dict(root=str(REPO), font_paths=[str(FONTS)])
+    inputs = {'book': json.dumps(resolved), 'bleed': str(bleed)}
+    pad = page_count(typst.compile(str(TEMPLATE), **args, sys_inputs=inputs)) % 2 == 1
+    return typst.compile(str(TEMPLATE), **args, **kwargs, sys_inputs={**inputs, 'pad': str(pad).lower()})
+
+
+def build(name: str, bleed: float = 0.0, output: Path = None) -> Path:
+    book = yaml.safe_load((REPO / 'books' / name / 'book.yml').read_text())
+    if output is None:
+        output = REPO / 'book-files' / name / ('interior-bleed.pdf' if bleed else 'interior.pdf')
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_bytes(compile_interior(resolve_book(book), bleed))
+    return output
+
+
 def resolve_cover(book: dict, printer: str, spine: float = None, bleed: float = 0.125,
                   guides: bool = False) -> dict:
     """Resolve cover drawing sizes and spine width for one printer."""
-    import typst
-
     cover = {k: {'id': v} if k in ('front', 'back') and isinstance(v, str) else v
              for k, v in book['cover'].items()}
-    pages = page_count(typst.compile(str(TEMPLATE), root=str(REPO), font_paths=[str(FONTS)],
-                                     sys_inputs={'book': json.dumps(resolve_book(book)), 'bleed': '0'}))
+    pages = page_count(compile_interior(resolve_book(book)))
     if spine is None:
         spine = cover.get('spine', {}).get(printer) or round(pages * SPINE_PER_PAGE[printer], 4)
 

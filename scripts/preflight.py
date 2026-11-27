@@ -11,6 +11,8 @@ Usage:
 Builds the interior (without bleed) and each printer's cover in memory from
 books/NAME/book.yml, exactly as build_book.py does, and checks:
 
+- Content: the text fields (copyright, dedication, preface, about) are filled in with no
+  TODOs left, and the paperback and ebook ISBNs are set and valid.
 - Interior: trim size, page count (KDP's limits; even for IngramSpark), fonts embedded,
   grayscale only, and each page's margins (KDP's inside margin grows with the page count).
 - Cover: size (both trims + spine + bleed), fonts embedded, grayscale only, everything
@@ -32,8 +34,8 @@ from pathlib import Path
 import yaml
 
 sys.path.insert(0, str(Path(__file__).parent))
-from build_book import (COVER_TEMPLATE, FONTS, REPO, SPINE_PER_PAGE, TEMPLATE, page_count,
-                        resolve_book, resolve_cover)
+from build_book import (COVER_TEMPLATE, FONTS, REPO, SPINE_PER_PAGE, compile_interior, isbn_list,
+                        page_count, resolve_book, resolve_cover)
 from convert_to_png import find_magick
 
 RENDER_PPI = 100
@@ -50,6 +52,8 @@ INGRAM_MARGIN = 0.5
 INGRAM_MIN_PAGES = 18
 # KDP allows spine text only from this many pages (thinner spines are too narrow).
 KDP_SPINE_TEXT_PAGES = 79
+# Text every book needs before publishing (Typst markup in book.yml).
+TEXT_FIELDS = ('copyright', 'dedication', 'preface', 'about')
 COVER_SAFE = 0.125
 SPINE_SAFE = 0.0625
 # Measurements within this of a limit pass (rendering and antialiasing blur edges slightly).
@@ -110,14 +114,29 @@ def page_ranges(pages: list) -> str:
     return ', '.join(f'{a}' if a == b else f'{a}-{b}' for a, b in runs)
 
 
+def check_content(book: dict) -> tuple:
+    """Return (notes, problems) for the text and ISBNs: everything needed before publishing."""
+    problems = []
+    for field in TEXT_FIELDS:
+        if not book.get(field):
+            problems.append(f'no `{field}:` in book.yml')
+        elif 'TODO' in book[field]:
+            problems.append(f'`{field}:` still has TODO text')
+    try:
+        isbns = dict(isbn_list(book))
+    except ValueError as e:
+        problems.append(str(e))
+        isbns = {}
+    missing = [fmt for fmt in ('paperback', 'ebook') if fmt not in isbns]
+    if missing:
+        problems.append(f"no {' or '.join(missing)} ISBN (`isbn: {{paperback: ..., ebook: ...}}`)")
+    return [', '.join(f'{fmt} ISBN {isbn}' for fmt, isbn in isbns.items()) or 'no ISBNs yet'], problems
+
+
 def check_interior(book: dict, printer: str) -> tuple:
     """Return (notes, problems) for the interior as uploaded to `printer`."""
-    import typst
-
     resolved = resolve_book(book)
-    args = dict(root=str(REPO), font_paths=[str(FONTS)],
-                sys_inputs={'book': json.dumps(resolved), 'bleed': '0'})
-    pdf = typst.compile(str(TEMPLATE), **args)
+    pdf = compile_interior(resolved)
     pages = page_count(pdf)
     trim = (book['trim']['width'], book['trim']['height'])
     problems = pdf_problems(pdf, trim)
@@ -131,7 +150,7 @@ def check_interior(book: dict, printer: str) -> tuple:
             problems.append(f'{pages} pages; IngramSpark needs an even count of at least {INGRAM_MIN_PAGES}')
         inside = outside = INGRAM_MARGIN
 
-    boxes = ink_boxes(typst.compile(str(TEMPLATE), format='png', ppi=RENDER_PPI, **args))
+    boxes = ink_boxes(compile_interior(resolved, format='png', ppi=RENDER_PPI))
     tight = {}  # side → [(page, margin)]
     for page, box in enumerate(boxes, start=1):
         if box is None:
@@ -224,6 +243,11 @@ def preflight(name: str, printers: list = None) -> bool:
     """Print every check for each printer; return True if all pass."""
     book = yaml.safe_load((REPO / 'books' / name / 'book.yml').read_text())
     ok = True
+    notes, problems = check_content(book)
+    print(f"{name} content: {'FAIL' if problems else 'ok'}")
+    for line in notes + [f'- {p}' for p in problems]:
+        print(f'  {line}')
+    ok = not problems
     for printer in printers or sorted(SPINE_PER_PAGE):
         for label, check in (('interior', check_interior), ('cover', check_cover)):
             notes, problems = check(book, printer)

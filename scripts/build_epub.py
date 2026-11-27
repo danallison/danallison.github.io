@@ -14,8 +14,9 @@ Arguments:
 
 One drawing per page, cropped to its ink and saved as a small 4-gray PNG (Kindle charges
 a delivery fee per megabyte). The cover is the front of the paperback cover. Front matter
-comes from book.yml; the ebook ISBN, if set (`isbn: {ebook: ...}`), goes on the copyright page
-and in the metadata. Also writes the cover as a separate JPEG (NAME-cover.jpg) for the
+and the "About the artist" page (`about:`, with an optional `about_photo:`) come from book.yml.
+Every ISBN that's set is listed on the copyright page, as in print, and the ebook ISBN
+(`isbn: {ebook: ...}`) is also the book's identifier in its metadata. Also writes the cover as a separate JPEG (NAME-cover.jpg) for the
 ebook cover upload.
 """
 
@@ -35,7 +36,7 @@ from pathlib import Path
 import yaml
 
 sys.path.insert(0, str(Path(__file__).parent))
-from build_book import COVER_TEMPLATE, FONTS, REPO, load_ink_bounds, resolve_cover
+from build_book import COVER_TEMPLATE, FONTS, REPO, isbn_list, load_ink_bounds, resolve_cover
 from convert_to_png import find_magick, svg_size
 
 # Drawings are fitted into this many pixels (portrait), then reduced to GRAYS shades.
@@ -61,6 +62,9 @@ h1 { font-size: 1.4em; font-weight: 600; margin: 2em 0 1em 0; }
 .preface p { text-align: justify; }
 .image-page { margin: 0; padding: 0; text-align: center; }
 .image-page img { max-width: 100%; max-height: 95vh; width: auto; height: auto; }
+.about p { text-align: justify; }
+.about-photo { text-align: center; margin-top: 2em; }
+.about-photo img { width: 40%; }  /* as in print: 2" of a 5.83" page */
 .end-mark { margin-top: 30%; }
 .end-mark img { width: 37%; }  /* as in print: 2.156" of a 5.83" page */
 """
@@ -161,7 +165,8 @@ def build_epub(name: str, output: Path = None) -> Path:
     output = output or out_dir / f'{name}.epub'
 
     full_title = f"{book['title']} Volume {book['volume']}"
-    isbn = (book.get('isbn') or {}).get('ebook')
+    isbns = isbn_list(book)
+    isbn = dict(isbns).get('ebook')
     identifier = f"urn:isbn:{isbn.replace('-', '')}" if isbn else \
         f"urn:uuid:{uuid.uuid5(uuid.NAMESPACE_URL, f'https://danallison.info/books/{name}')}"
     year = re.search(r'©\s*(\d{4})', book['copyright'])
@@ -178,11 +183,16 @@ def build_epub(name: str, output: Path = None) -> Path:
         mark_svg = REPO / book['end_mark']['path']
         end_mark = render_drawing(mark_svg, load_ink_bounds([mark_svg])[mark_svg], img_dir / 'end-mark.png')
     cover = render_cover(book, out_dir / f'{name}-cover.jpg')
+    photo = None
+    if book.get('about_photo'):
+        photo = img_dir / 'about-photo.jpg'
+        subprocess.run([find_magick(), str(REPO / book['about_photo']), '-resize', f'{IMAGE_BOX[0]}x{IMAGE_BOX[1]}>',
+                        '-colorspace', 'Gray', '-quality', '85', '-strip', str(photo)], check=True, capture_output=True)
 
     # Pages, in reading order: (file, title, xhtml body, epub:type)
     copyright = markup_html(book['copyright'])
-    if isbn:
-        copyright += f'\n<p>ISBN {html.escape(isbn)} (ebook)</p>'
+    if isbns:
+        copyright += '\n<p>' + '<br/>\n'.join(f'ISBN {html.escape(n)} ({fmt})' for fmt, n in isbns) + '</p>'
     pages = [
         ('cover.xhtml', 'Cover',
          f'<div class="image-page"><img src="images/cover.jpg" alt="Cover: {html.escape(full_title)}, by {html.escape(book["author"])}"/></div>',
@@ -201,14 +211,21 @@ def build_epub(name: str, output: Path = None) -> Path:
         pages.append((f'd{n:03d}.xhtml', f'Drawing {n}',
                       f'<div class="image-page"><img src="images/{img.name}" alt="{html.escape(drawing_alt(i))}"/></div>',
                       'bodymatter' if n == 1 else None))
+    if book.get('about'):
+        photo_html = (f'<div class="about-photo"><img src="images/{photo.name}" alt="{html.escape(book["author"])}"/></div>\n'
+                      if photo else '')
+        pages.append(('about.xhtml', 'About the artist',
+                      f'<section class="about">{photo_html}<h1>About the artist</h1>\n{markup_html(book["about"])}</section>',
+                      'backmatter'))
     if end_mark:
         pages.append(('end.xhtml', 'End', '<div class="image-page end-mark"><img src="images/end-mark.png" alt="A heart with a face, beside another face"/></div>', None))
 
     first_drawing = 'd001.xhtml'
+    toc = [('title.xhtml', full_title), ('preface.xhtml', 'Preface'), (first_drawing, 'Drawings')]
+    if book.get('about'):
+        toc.append(('about.xhtml', 'About the artist'))
     nav = xhtml('Contents', f"""<nav epub:type="toc" id="toc"><h1>Contents</h1><ol>
-<li><a href="title.xhtml">{html.escape(full_title)}</a></li>
-<li><a href="preface.xhtml">Preface</a></li>
-<li><a href="{first_drawing}">Drawings</a></li>
+{chr(10).join(f'<li><a href="{f}">{html.escape(t)}</a></li>' for f, t in toc)}
 </ol></nav>
 <nav epub:type="landmarks" hidden="hidden"><ol>
 <li><a epub:type="cover" href="cover.xhtml">Cover</a></li>
@@ -219,9 +236,8 @@ def build_epub(name: str, output: Path = None) -> Path:
 <head><meta name="dtb:uid" content="{identifier}"/></head>
 <docTitle><text>{html.escape(full_title)}</text></docTitle>
 <navMap>
-<navPoint id="n1" playOrder="1"><navLabel><text>{html.escape(full_title)}</text></navLabel><content src="title.xhtml"/></navPoint>
-<navPoint id="n2" playOrder="2"><navLabel><text>Preface</text></navLabel><content src="preface.xhtml"/></navPoint>
-<navPoint id="n3" playOrder="3"><navLabel><text>Drawings</text></navLabel><content src="{first_drawing}"/></navPoint>
+{chr(10).join(f'<navPoint id="n{n}" playOrder="{n}"><navLabel><text>{html.escape(t)}</text></navLabel><content src="{f}"/></navPoint>'
+           for n, (f, t) in enumerate(toc, 1))}
 </navMap>
 </ncx>
 """
@@ -235,6 +251,8 @@ def build_epub(name: str, output: Path = None) -> Path:
     ]
     manifest += [f'<item id="img-{p.stem}" href="images/{p.name}" media-type="image/png"/>'
                  for p in images + ([end_mark] if end_mark else [])]
+    if photo:
+        manifest.append(f'<item id="img-about-photo" href="images/{photo.name}" media-type="image/jpeg"/>')
     manifest += [f'<item id="{f[:-6]}" href="{f}" media-type="application/xhtml+xml"/>' for f, *_ in pages]
     spine = [f'<itemref idref="{f[:-6]}"/>' for f, *_ in pages]
     opf = f"""<?xml version="1.0" encoding="utf-8"?>
@@ -286,7 +304,7 @@ def build_epub(name: str, output: Path = None) -> Path:
         for f, title, body, epub_type in pages:
             deflate(f'OEBPS/{f}', xhtml(title, body, epub_type))
         z.write(cover, 'OEBPS/images/cover.jpg', compress_type=zipfile.ZIP_STORED)
-        for img in images + ([end_mark] if end_mark else []):
+        for img in images + ([end_mark] if end_mark else []) + ([photo] if photo else []):
             z.write(img, f'OEBPS/images/{img.name}', compress_type=zipfile.ZIP_STORED)
 
     mb = output.stat().st_size / 1e6

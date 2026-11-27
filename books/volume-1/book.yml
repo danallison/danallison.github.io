@@ -12,7 +12,13 @@ trim: {width: 5.83, height: 8.27}  # inches (A5)
 copyright: |
   Copyright © 2025 by Dan Allison, licensed under Creative Commons Attribution-NonCommercial 4.0 International. To view a copy of this license, visit https://creativecommons.org/licenses/by-nc/4.0/
 
+  Second edition, 2026. First published in 2025.
+
   https://danallison.info
+
+# ISBNs (see the allocation table in books/PLAN.md). Each one set is listed on the copyright
+# page of both the print book and the ebook, and checked for typos when building.
+# isbn: {paperback: 978-..., ebook: 978-...}
 
 dedication: Dedicated to my dear sister Aubrey.
 
@@ -30,6 +36,12 @@ preface: |
   Dan Allison \
   Seattle, Washington \
   November 2025
+
+# About the artist page, after the last drawing (Typst markup, like the preface). Optional
+# photo above it: about_photo: images/PATH.jpg (grayscale for print).
+# TODO: write the About the artist text
+about: |
+  TODO about the artist
 
 end_mark: {path: books/shared/end-mark.svg, width: 2.156}
 
